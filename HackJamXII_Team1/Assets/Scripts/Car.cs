@@ -1,46 +1,65 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 /// <summary>
-/// Mueve un icono de UI (uno de los "Square") hacia la posición de otro
-/// elemento de UI (la esfera), sin salirse nunca de los límites del Canvas
-/// que los contiene.
+/// Mueve un icono de UI (uno de los "Square") saltando de casilla en casilla
+/// a lo largo del circuito, formado por todos los GameObjects cuyo nombre
+/// empieza por "Checkpoint". Cada "timeBetweenCheckpoints" milisegundos, el coche se
+/// teletransporta a la siguiente casilla de la lista.
 /// </summary>
 [RequireComponent(typeof(RectTransform))]
 public class Car : MonoBehaviour
 {
-    [Header("Objetivo")]
-    [Tooltip("RectTransform hacia el que se desplaza este icono (la esfera).")]
-    [SerializeField] private RectTransform target;
-
     [Header("Movimiento")]
-    [SerializeField] private float speed = 150f; // píxeles por segundo
+    [Tooltip("Tiempo en milisegundos que espera el coche antes de saltar a la siguiente casilla.")]
+    [SerializeField] private float timeBetweenCheckpoints;
 
     private RectTransform rect;
-    private RectTransform bounds; // el Canvas que limita el movimiento
+    private List<RectTransform> checkpoints = new List<RectTransform>();
+    private int currentCheckpoint = 0;
+    private float timer = 0f;
 
     private void Awake()
     {
         rect = (RectTransform)transform;
-        bounds = (RectTransform)rect.parent; // el Square es hijo directo del Canvas
+        checkpoints = FindCheckpoints();
+
+        if (checkpoints.Count > 0)
+        {
+            rect.anchoredPosition = checkpoints[currentCheckpoint].anchoredPosition;
+        }
     }
 
     private void Update()
     {
-        if (target == null) return;
+        if (checkpoints.Count == 0) return;
 
-        Vector2 newPos = Vector2.MoveTowards(rect.anchoredPosition, target.anchoredPosition, speed * Time.deltaTime);
-        rect.anchoredPosition = ClampToBounds(newPos);
+        timer += Time.deltaTime * 1000f; // deltaTime está en segundos, timeBetweenCheckpoints en ms
+        if (timer >= timeBetweenCheckpoints)
+        {
+            timer = 0f;
+            currentCheckpoint = (currentCheckpoint + 1) % checkpoints.Count;
+            rect.anchoredPosition = checkpoints[currentCheckpoint].anchoredPosition;
+        }
     }
 
-    private Vector2 ClampToBounds(Vector2 pos)
+    /// <summary>
+    /// Busca en la escena todos los GameObjects "Checkpoint..." y los devuelve
+    /// ordenados según el número que contenga su nombre (Checkpoint 1, Checkpoint 2...).
+    /// </summary>
+    private static List<RectTransform> FindCheckpoints()
     {
-        if (bounds == null) return pos;
+        return Object.FindObjectsByType<RectTransform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+            .Where(t => t.name.StartsWith("Checkpoint"))
+            .OrderBy(t => ExtractCheckpointNumber(t.name))
+            .ToList();
+    }
 
-        Vector2 halfArea = bounds.rect.size * 0.5f;
-        Vector2 halfIcon = rect.rect.size * 0.5f;
-
-        pos.x = Mathf.Clamp(pos.x, -halfArea.x + halfIcon.x, halfArea.x - halfIcon.x);
-        pos.y = Mathf.Clamp(pos.y, -halfArea.y + halfIcon.y, halfArea.y - halfIcon.y);
-        return pos;
+    private static int ExtractCheckpointNumber(string checkpointName)
+    {
+        Match match = Regex.Match(checkpointName, @"\d+");
+        return match.Success ? int.Parse(match.Value) : 0;
     }
 }
