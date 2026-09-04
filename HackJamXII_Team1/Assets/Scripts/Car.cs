@@ -7,17 +7,29 @@ using UnityEngine;
 /// Mueve un icono de UI (uno de los "Square") saltando de casilla en casilla
 /// a lo largo del circuito, formado por todos los GameObjects cuyo nombre
 /// empieza por "Checkpoint". Cada "timeBetweenCheckpoints" milisegundos, el coche se
-/// teletransporta a la siguiente casilla de la lista.
+/// teletransporta a la siguiente casilla de la lista, desplazado lateralmente
+/// (izquierda o derecha) respecto al vector que va de la casilla actual a la siguiente,
+/// para que varios coches en la misma casilla no queden superpuestos.
 /// </summary>
 [RequireComponent(typeof(RectTransform))]
 public class Car : MonoBehaviour
 {
-    [Header("Movimiento")]
-    [Tooltip("Tiempo en milisegundos que espera el coche antes de saltar a la siguiente casilla.")]
-    [SerializeField] private float timeBetweenCheckpoints;
+    private enum Side { Left, Right }
+
+    [Header("Stats")]
+    [SerializeField] public int checkpointsReached = 0;        // Lo lejos que hemos llegado
+    [SerializeField] public float timeBetweenCheckpoints;      // La "velocidad"
+    [SerializeField] public float tires = 1;       // El desgaste de los neumáticos
+    [SerializeField] public float fuel = 1;        // El combustible que queda
+
+    [Header("Posición en la casilla")]
+    [Tooltip("A qué lado del vector (casilla actual -> siguiente casilla) se desplaza este coche.")]
+    [SerializeField] private Side side = Side.Left;
+    [Tooltip("Distancia en píxeles a la que se desplaza el coche respecto al centro de la casilla.")]
+    [SerializeField] private float lateralOffset = 30f;
 
     private RectTransform rect;
-    private List<RectTransform> checkpoints = new List<RectTransform>();
+    public List<RectTransform> checkpoints = new List<RectTransform>();
     private int currentCheckpoint = 0;
     private float timer = 0f;
 
@@ -28,7 +40,7 @@ public class Car : MonoBehaviour
 
         if (checkpoints.Count > 0)
         {
-            rect.anchoredPosition = checkpoints[currentCheckpoint].anchoredPosition;
+            rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
         }
     }
 
@@ -41,9 +53,38 @@ public class Car : MonoBehaviour
         {
             timer = 0f;
             currentCheckpoint = (currentCheckpoint + 1) % checkpoints.Count;
-            rect.anchoredPosition = checkpoints[currentCheckpoint].anchoredPosition;
+            checkpointsReached++;
+            rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
         }
     }
+
+    /// <summary>
+    /// Calcula la posición de la casilla "index" desplazada lateralmente según
+    /// la dirección hacia la siguiente casilla del circuito y el lado configurado.
+    /// </summary>
+    private Vector2 GetOffsetPosition(int index)
+    {
+        Vector2 current = checkpoints[index].anchoredPosition;
+
+        if (checkpoints.Count < 2) return current;
+
+        Vector2 next = checkpoints[(index + 1) % checkpoints.Count].anchoredPosition;
+        Vector2 direction = (next - current).normalized;
+
+        if (direction == Vector2.zero) return current;
+
+        // Perpendicular a la izquierda del vector dirección; a la derecha es la opuesta.
+        Vector2 left = new Vector2(-direction.y, direction.x);
+        Vector2 perpendicular = side == Side.Left ? left : -left;
+
+        return current + perpendicular * lateralOffset;
+    }
+
+    // Coincide con "Checkpoint" o "Checkpoint (N)", pero no con el objeto
+    // contenedor "Checkpoints" (que también empieza por "Checkpoint" y por
+    // eso se colaba en la lista, provocando que el coche saltase a su
+    // posición -el centro del circuito- al pasar del último checkpoint al primero).
+    private static readonly Regex CheckpointNameRegex = new Regex(@"^Checkpoint( ?\(\d+\))?$");
 
     /// <summary>
     /// Busca en la escena todos los GameObjects "Checkpoint..." y los devuelve
@@ -52,7 +93,7 @@ public class Car : MonoBehaviour
     private static List<RectTransform> FindCheckpoints()
     {
         return Object.FindObjectsByType<RectTransform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
-            .Where(t => t.name.StartsWith("Checkpoint"))
+            .Where(t => CheckpointNameRegex.IsMatch(t.name))
             .OrderBy(t => ExtractCheckpointNumber(t.name))
             .ToList();
     }
