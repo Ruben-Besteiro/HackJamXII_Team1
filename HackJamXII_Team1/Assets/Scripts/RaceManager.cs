@@ -20,14 +20,31 @@ public class RaceManager : MonoBehaviour
     public static RaceManager Instance { get; private set; }
 
     [Header("Cuenta atrás")]
-    private int countdownValue = 3;
+    [SerializeField] private float countdownDuration = 3f;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private GameObject countdownCanvas;
+
+    private float countdownTimeRemaining;
+
+    // Se pone a "true" en cuanto termina la cuenta atrás. Mientras sea
+    // "false" la carrera no avanza (ni el tiempo general ni las cartas).
+    public bool RaceStarted { get; private set; }
 
     [Header("Coches")]
     [SerializeField] private Car car1;
     [SerializeField] private Car car2;
     private Car leader;
 
+    /// <summary>
+    /// Número del coche ganador (1 o 2). Se fija una única vez, en el
+    /// momento exacto en que termina la carrera (ver "RefreshGeneralTimeBar"),
+    /// comparando "checkpointsReached" de cada coche. Debe calcularse ahí y
+    /// no más tarde: "car1"/"car2" viven en la escena "Sample" y se destruyen
+    /// en cuanto esta se descarga, así que para cuando "ResultsManager" (ya
+    /// en la escena "Results") pregunta por el ganador, esas referencias ya
+    /// no serían válidas.
+    /// </summary>
+    public int WinnerCarNumber { get; private set; } = 1;
 
     [Header("Tiempo")]
     [SerializeField] private Image generalTimeBar;
@@ -72,6 +89,7 @@ public class RaceManager : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void OnDestroy()
@@ -88,10 +106,20 @@ public class RaceManager : MonoBehaviour
 
         initialGeneralTimer = generalTimer;
         RefreshGeneralTimeBar();
+
+        countdownTimeRemaining = countdownDuration;
+        RaceStarted = false;
+        UpdateCountdownText();
     }
 
     void Update()
     {
+        if (!RaceStarted)
+        {
+            UpdateCountdown();
+            return;
+        }
+
         UpdateGeneralTimer();
 
         UpdateLapCounter(car1, ref lastCheckpointsReached1, ref laps1, lapCounterText1);
@@ -100,6 +128,35 @@ public class RaceManager : MonoBehaviour
         UpdateLeader();
 
         //UpdateCardTestHelper();
+    }
+
+    /// <summary>
+    /// Cuenta atrás previa a la carrera: resta "Time.deltaTime" a
+    /// "countdownTimeRemaining" y refresca "countdownText" con los segundos
+    /// que quedan (sin decimales). Al llegar a 0 oculta "countdownCanvas" y
+    /// marca "RaceStarted" para que la partida empiece de verdad.
+    /// </summary>
+    private void UpdateCountdown()
+    {
+        countdownTimeRemaining = Mathf.Max(0f, countdownTimeRemaining - Time.deltaTime);
+        UpdateCountdownText();
+
+        if (countdownTimeRemaining <= 0f)
+        {
+            RaceStarted = true;
+
+            if (countdownCanvas != null)
+            {
+                countdownCanvas.SetActive(false);
+            }
+        }
+    }
+
+    private void UpdateCountdownText()
+    {
+        if (countdownText == null) return;
+
+        countdownText.text = Mathf.CeilToInt(countdownTimeRemaining).ToString();
     }
 
     /// <summary>
@@ -127,7 +184,13 @@ public class RaceManager : MonoBehaviour
         generalTimeBar.fillAmount = generalTimer / initialGeneralTimer;
 
         if (generalTimeBar.fillAmount <= 0f)
-            SceneManager.LoadScene("EndGame");
+        {
+            // Hay que fijar el ganador aquí, antes de cambiar de escena:
+            // "car1"/"car2" pertenecen a "Sample" y se destruyen en cuanto
+            // se descarga, así que ya no se podrían consultar desde "Results".
+            WinnerCarNumber = (car1 != null && car2 != null && car2.checkpointsReached > car1.checkpointsReached) ? 2 : 1;
+            GameSceneManager.Instance.LoadScene("Results", SceneTransition.FadeBlack);
+        }
     }
 
     /// <summary>

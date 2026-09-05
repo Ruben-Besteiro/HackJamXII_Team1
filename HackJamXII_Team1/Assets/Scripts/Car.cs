@@ -48,6 +48,11 @@ public class Car : MonoBehaviour
     private int pendingSteps = 0;
     private Coroutine moveCoroutine;
 
+    // AudioSource propio para el sonido de motor: así cada coche puede tener
+    // su propio "Engine" sonando en loop mientras se mueve, sin pisar el de
+    // otro coche que se esté moviendo a la vez.
+    private AudioSource engineAudioSource;
+
     private void Awake()
     {
         rect = (RectTransform)transform;
@@ -57,6 +62,10 @@ public class Car : MonoBehaviour
         {
             rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
         }
+
+        engineAudioSource = gameObject.AddComponent<AudioSource>();
+        engineAudioSource.playOnAwake = false;
+        engineAudioSource.loop = true;
     }
 
     // TODO: Esta función no se hace en Update, se hace a cada llamada de Next Card, suscribir a evento
@@ -136,6 +145,7 @@ public class Car : MonoBehaviour
             moveCoroutine = null;
         }
         pendingSteps = 0;
+        StopEngineSound();
     }
 
     // Update car status depends on the values
@@ -172,6 +182,8 @@ public class Car : MonoBehaviour
     /// </summary>
     private IEnumerator MoveStepByStep()
     {
+        StartEngineSound();
+
         while (pendingSteps > 0 && checkpoints.Count > 0)
         {
             pendingSteps--;
@@ -193,6 +205,33 @@ public class Car : MonoBehaviour
             checkpointsReached++;
         }
 
+        StopEngineSound();
         moveCoroutine = null;
+    }
+
+    /// <summary>
+    /// Arranca (o retoma) el sonido de motor en loop para este coche. Si ya
+    /// estaba sonando (p. ej. porque llegaron más "pendingSteps" mientras el
+    /// coche seguía en marcha) no hace nada.
+    /// </summary>
+    private void StartEngineSound()
+    {
+        if (engineAudioSource == null || SoundManager.Instance == null) return;
+        if (engineAudioSource.isPlaying) return;
+
+        AudioClip clip = SoundManager.Instance.GetSFXClip(SFX.Engine);
+        if (clip == null) return;
+
+        engineAudioSource.clip = clip;
+        engineAudioSource.volume = SoundManager.Instance.SfxVolume;
+        engineAudioSource.Play();
+    }
+
+    private void StopEngineSound()
+    {
+        if (engineAudioSource != null)
+        {
+            engineAudioSource.Stop();
+        }
     }
 }

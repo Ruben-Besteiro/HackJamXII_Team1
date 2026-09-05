@@ -2428,6 +2428,7 @@ MonoBehaviour:
   textTiresValue: {fileID: 5905746353639256919}
   textChasisValue: {fileID: 6195832312469937720}
   imageTimeFill: {fileID: 8714764675657802298}
+  cardCanvas: {fileID: 3331945963423946899}
   maxTime: 15
 --- !u!1 &3999064167234102358
 GameObject:
@@ -2520,6 +2521,7 @@ MonoBehaviour:
   textTiresValue: {fileID: 7885293997377448992}
   textChasisValue: {fileID: 6160003474405366993}
   imageTimeFill: {fileID: 1069246438510034417}
+  cardCanvas: {fileID: 3331945963423946899}
   maxTime: 15
 --- !u!1 &4285825773085639018
 GameObject:
