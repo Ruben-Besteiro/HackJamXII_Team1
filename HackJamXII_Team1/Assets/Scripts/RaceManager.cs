@@ -23,9 +23,15 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private Car car2;
     [SerializeField] private Car leader;
 
+    [SerializeField] private Image generalTimeBar;
+    public float generalTimer = 180f;
+
+    // Valor de "generalTimer" al empezar la carrera, usado como referencia
+    // para calcular qué fracción de la barra hay que rellenar.
+    private float initialGeneralTimer;
 
     // Los tiempos para que el jugador decida qué opción usar para su carta
-    public float maxTimeForCards = 5;
+    public float maxTimeForCards;
     public float timeRemainingForCard1;
     public float timeRemainingForCard2;
 
@@ -72,16 +78,46 @@ public class RaceManager : MonoBehaviour
     void Start()
     {
         timeUntilNextCardTest = Random.Range(1f, 3f);
+
+        initialGeneralTimer = generalTimer;
+        RefreshGeneralTimeBar();
     }
 
     void Update()
     {
+        UpdateGeneralTimer();
+
         UpdateLapCounter(car1, ref lastCheckpointsReached1, ref laps1, lapCounterText1);
         UpdateLapCounter(car2, ref lastCheckpointsReached2, ref laps2, lapCounterText2);
 
         UpdateLeader();
 
         //UpdateCardTestHelper();
+    }
+
+    /// <summary>
+    /// Mientras quede tiempo, resta "Time.deltaTime" a "generalTimer" y
+    /// refresca "generalTimeBar" con el nuevo valor, fotograma a fotograma
+    /// para que la barra baje de forma continua en vez de "a saltitos".
+    /// </summary>
+    private void UpdateGeneralTimer()
+    {
+        if (generalTimer <= 0) return;
+
+        generalTimer = Mathf.Max(0f, generalTimer - Time.deltaTime);
+        RefreshGeneralTimeBar();
+    }
+
+    /// <summary>
+    /// Actualiza "generalTimeBar" para que su "fillAmount" refleje qué
+    /// fracción del tiempo total de partida queda en "generalTimer"
+    /// (1 = tiempo completo, 0 = se ha agotado).
+    /// </summary>
+    private void RefreshGeneralTimeBar()
+    {
+        if (generalTimeBar == null || initialGeneralTimer <= 0) return;
+
+        generalTimeBar.fillAmount = generalTimer / initialGeneralTimer;
     }
 
     /// <summary>

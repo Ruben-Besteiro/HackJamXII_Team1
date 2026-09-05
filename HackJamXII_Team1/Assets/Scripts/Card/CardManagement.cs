@@ -27,9 +27,28 @@ public class CardManagement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textTiresValue;
     [SerializeField] private TextMeshProUGUI textChasisValue;
 
-    [Header("Time Card References")] 
+    [Header("Time Card References")]
     [SerializeField] private Image imageTimeFill;
-    [SerializeField] private float maxTime = 10f;
+
+    // Se usa si no hay un RaceManager en la escena (por ejemplo, probando
+    // este canvas de forma aislada).
+    [SerializeField] private float fallbackMaxTime = 10f;
+
+    // La TimeBar nunca dura menos que esto, para que siempre sea jugable.
+    [SerializeField] private float minTimeBarDuration = 2f;
+
+    // Punto de referencia con el que calibramos la duración de la TimeBar:
+    // cuando el timer general marca "referenceGeneralTimer" segundos, la
+    // TimeBar dura "referenceMaxTime" segundos (p. ej. 3:00 -> 15s).
+    [SerializeField] private float referenceGeneralTimer = 180f;
+    [SerializeField] private float referenceMaxTime = 15f;
+
+    // Segundos de timer general que quedan cuando la TimeBar alcanza ya su
+    // mínimo ("minTimeBarDuration"). Entre este punto y el de referencia de
+    // arriba, la duración de la TimeBar baja en línea recta.
+    [SerializeField] private float floorTriggerGeneralTimer = 8f;
+
+    private float maxTime;
     private float currentTime = 0f;
 
     
@@ -121,8 +140,29 @@ public class CardManagement : MonoBehaviour
 
     private void ResetTimer()
     {
+        maxTime = CalculateMaxTime();
         currentTime = maxTime;
         imageTimeFill.fillAmount = 1f;
+
+        Debug.Log($"[CardManagement] Nueva carta: la TimeBar tardará {maxTime:0.00}s en vaciarse.");
+    }
+
+    /// <summary>
+    /// Calcula cuánto debe durar la TimeBar en función del tiempo que le
+    /// queda al RaceManager. Baja en línea recta desde
+    /// (referenceGeneralTimer, referenceMaxTime) hasta
+    /// (floorTriggerGeneralTimer, minTimeBarDuration), y a partir de ahí se
+    /// queda fija en "minTimeBarDuration" para que siga siendo jugable.
+    /// </summary>
+    private float CalculateMaxTime()
+    {
+        if (RaceManager.Instance == null)
+            return fallbackMaxTime;
+
+        float slope = (referenceMaxTime - minTimeBarDuration) / (referenceGeneralTimer - floorTriggerGeneralTimer);
+        float value = minTimeBarDuration + slope * (RaceManager.Instance.generalTimer - floorTriggerGeneralTimer);
+
+        return Mathf.Max(minTimeBarDuration, value);
     }
 
     private void Update()
