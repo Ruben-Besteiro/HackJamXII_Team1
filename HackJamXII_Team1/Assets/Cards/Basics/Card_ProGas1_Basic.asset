@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_ProGas1_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: Te llaman en radio para entrar en boxes.
-  cardImage: {fileID: 0}
+  cardImage: {fileID: -143572106, guid: 265d67aae9f443c4790e3b6ba6d9024f, type: 3}
   cardTitle: Parada en boxes
   cardRightChoiceText: Entras
   cardLeftChoiceText: No Entras

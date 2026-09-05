@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "Hay sospechas de que escuder\xEDa ha realizado un cambio ilegal
     en el chasis."
-  cardImage: {fileID: 0}
+  cardImage: {fileID: -143572106, guid: 265d67aae9f443c4790e3b6ba6d9024f, type: 3}
   cardTitle: "Sanci\xF3n de la FIA"
   cardRightChoiceText: "Acatamos sanci\xF3n"
   cardLeftChoiceText: Mantener silencio

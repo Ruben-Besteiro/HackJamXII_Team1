@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_ProGas_Rare1
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "\xA1ACCIDENTE!"
-  cardImage: {fileID: 0}
+  cardImage: {fileID: -143572106, guid: 265d67aae9f443c4790e3b6ba6d9024f, type: 3}
   cardTitle: Bandera roja
   cardRightChoiceText: Frenazo
   cardLeftChoiceText: Volantazo

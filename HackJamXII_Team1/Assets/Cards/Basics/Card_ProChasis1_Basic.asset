@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_ProChasis1_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: Se te presenta una oportunidad para aumentar el taller.
-  cardImage: {fileID: 0}
+  cardImage: {fileID: -1992017924, guid: 9992552ec6c70774fbb3b51cbf2fc40d, type: 3}
   cardTitle: "Aerodin\xE1mica"
   cardRightChoiceText: Invertimos en I+D
   cardLeftChoiceText: No se derrocha

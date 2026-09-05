@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "Se ha detectado un leve pinchazo. Pero solo puedes poner neum\xE1ticos
     viejos."
-  cardImage: {fileID: 0}
+  cardImage: {fileID: -998876785, guid: 7b8e7d3280f43a94da4aaeaf1a9586a7, type: 3}
   cardTitle: Pinchazo lento
   cardRightChoiceText: Aguantamos
   cardLeftChoiceText: "Cambias neum\xE1ticos"
