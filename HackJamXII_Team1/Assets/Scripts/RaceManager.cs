@@ -26,6 +26,19 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private GameObject countdownCanvas;
 
+    // Las 5 luces rojas del semáforo (sprites "SEMAFORO_ENCENDIDO_1".."_5",
+    // uno por imagen), que se van encendiendo de una en una según baja
+    // "countdownTimeRemaining". El índice 0 es la primera en encenderse.
+    [SerializeField] private Image[] redLights;
+
+    // Segundos de cuenta atrás restantes en los que se enciende cada
+    // "redLights[i]" (mismo orden: índice 0 -> primer valor, etc.).
+    private static readonly float[] RedLightThresholds = { 2.8f, 2.6f, 2.4f, 2.2f, 2.0f };
+
+    // Luz verde del semáforo (sprite "SEMAFORO_ENCENDIDO_0"), que se enciende
+    // un segundo después de la última roja, a la vez que arranca la carrera.
+    [SerializeField] private Image greenLight;
+
     // Canvas con los lap counters y la "GeneralTimeBar": se oculta mientras
     // dura la cuenta atrás inicial, igual que las cartas, para que no se vea
     // hasta que la partida empiece de verdad.
@@ -33,7 +46,10 @@ public class RaceManager : MonoBehaviour
 
     private float countdownTimeRemaining;
 
-    // Se pone a "true" en cuanto termina la cuenta atrás. Mientras sea
+    // Se pone a "true" en el segundo 1 de cuenta atrás (a la vez que se
+    // enciende la luz verde), no al llegar al 0: el semáforo se queda un
+    // segundo más en pantalla (encendido en verde) mientras la carrera ya
+    // ha arrancado de verdad (HUD, tiempo general, cartas...). Mientras sea
     // "false" la carrera no avanza (ni el tiempo general ni las cartas).
     public bool RaceStarted { get; private set; }
 
@@ -111,11 +127,16 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
-        if (!RaceStarted)
+        // El semáforo sigue contando (y hay que seguir refrescándolo) hasta
+        // el segundo 0 exacto, aunque la carrera ya haya arrancado un
+        // segundo antes: por eso esto NO va dentro del "if (!RaceStarted)"
+        // de más abajo.
+        if (countdownTimeRemaining > 0f)
         {
             UpdateCountdown();
-            return;
         }
+
+        if (!RaceStarted) return;
 
         UpdateGeneralTimer();
 
@@ -127,28 +148,30 @@ public class RaceManager : MonoBehaviour
 
     /// <summary>
     /// Cuenta atrás previa a la carrera: resta "Time.deltaTime" a
-    /// "countdownTimeRemaining" y refresca "countdownText" con los segundos
-    /// que quedan (sin decimales). Al llegar a 0 oculta "countdownCanvas" y
-    /// marca "RaceStarted" para que la partida empiece de verdad.
+    /// "countdownTimeRemaining", refresca "countdownText" y las luces del
+    /// semáforo ("UpdateLights"). En el segundo 1 marca "RaceStarted" y
+    /// muestra el HUD (la carrera arranca ya, con el semáforo en verde);
+    /// en el 0 oculta "countdownCanvas" entero.
     /// </summary>
     private void UpdateCountdown()
     {
         countdownTimeRemaining = Mathf.Max(0f, countdownTimeRemaining - Time.deltaTime);
         UpdateCountdownText();
+        UpdateLights();
 
-        if (countdownTimeRemaining <= 0f)
+        if (!RaceStarted && countdownTimeRemaining <= 1f)
         {
             RaceStarted = true;
-
-            if (countdownCanvas != null)
-            {
-                countdownCanvas.SetActive(false);
-            }
 
             if (hudCanvas != null)
             {
                 hudCanvas.enabled = true;
             }
+        }
+
+        if (countdownTimeRemaining <= 0f && countdownCanvas != null)
+        {
+            countdownCanvas.SetActive(false);
         }
     }
 
@@ -157,6 +180,31 @@ public class RaceManager : MonoBehaviour
         if (countdownText == null) return;
 
         countdownText.text = Mathf.CeilToInt(countdownTimeRemaining).ToString();
+    }
+
+    /// <summary>
+    /// Enciende cada "redLights[i]" en cuanto "countdownTimeRemaining" baja
+    /// de su "RedLightThresholds[i]" (2.8, 2.6, 2.4, 2.2, 2.0), y
+    /// "greenLight" al llegar a 1. Se recalculan las 6 cada frame en vez de
+    /// una sola vez porque es más simple y no tiene coste real.
+    /// </summary>
+    private void UpdateLights()
+    {
+        if (redLights != null)
+        {
+            for (int i = 0; i < redLights.Length && i < RedLightThresholds.Length; i++)
+            {
+                if (redLights[i] != null)
+                {
+                    redLights[i].enabled = countdownTimeRemaining <= RedLightThresholds[i];
+                }
+            }
+        }
+
+        if (greenLight != null)
+        {
+            greenLight.enabled = countdownTimeRemaining <= 1f;
+        }
     }
 
     private void UpdateGeneralTimer()
