@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,6 +29,9 @@ public class Car : MonoBehaviour
     [SerializeField] public int fuel = 1;        // El combustible que queda
     [SerializeField] public int chasis = 1;        // Estado del coche
 
+    [Tooltip("Segundos de espera entre cada casilla al avanzar varias de golpe.")]
+    [SerializeField] private float stepCooldown = 0.2f;
+
     [Header("Posición en la casilla")]
     [Tooltip("A qué lado del vector (casilla actual -> siguiente casilla) se desplaza este coche.")]
     [SerializeField] private Side side = Side.Left;
@@ -38,6 +42,11 @@ public class Car : MonoBehaviour
     public List<RectTransform> checkpoints = new List<RectTransform>();
     private int currentCheckpoint = 0;
     private float timer = 0f;
+
+    // Movimiento pendiente: en vez de teletransportarse a la casilla final,
+    // el coche avanza de una en una con "stepCooldown" segundos entre saltos.
+    private int pendingSteps = 0;
+    private Coroutine moveCoroutine;
 
     private void Awake()
     {
@@ -120,25 +129,73 @@ public class Car : MonoBehaviour
     private void OnDisable()
     {
         cardManager.OnCardChanged -= UpdateCarStatus;
+
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+        pendingSteps = 0;
     }
 
-    // Update car status depends on the values 
+    // Update car status depends on the values
     private void UpdateCarStatus(int currentGas, int currentTires, int currentChasis, bool endedTimer)
     {
         fuel = currentGas;
         tires = currentTires;
         chasis = currentChasis;
-        
+
         int squareMovement = (tires == 0 || chasis == 0) ? 0 : fuel;
 
         if (endedTimer)
             return;
-        // Movement car
-        currentCheckpoint = (currentCheckpoint + squareMovement) % checkpoints.Count;
-        checkpointsReached += squareMovement;
-        rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
+
+        // Movement car: en vez de saltar directamente a la casilla final,
+        // se encola el avance y se consume de una casilla en una cada
+        // "stepCooldown" segundos.
+        if (squareMovement > 0)
+        {
+            pendingSteps += squareMovement;
+
+            if (moveCoroutine == null)
+            {
+                moveCoroutine = StartCoroutine(MoveStepByStep());
+            }
+        }
 
         if (currentGas == 0)
             fuel--;
+    }
+
+    /// <summary>
+    /// Consume "pendingSteps" de una casilla en una, desplazándose
+    /// físicamente (interpolando la posición) desde la casilla actual a la
+    /// siguiente a lo largo de "stepCooldown" segundos, en vez de
+    /// teletransportarse directamente a la casilla final.
+    /// </summary>
+    private IEnumerator MoveStepByStep()
+    {
+        while (pendingSteps > 0 && checkpoints.Count > 0)
+        {
+            pendingSteps--;
+
+            int nextCheckpoint = (currentCheckpoint + 1) % checkpoints.Count;
+            Vector2 startPos = rect.anchoredPosition;
+            Vector2 endPos = GetOffsetPosition(nextCheckpoint);
+
+            float elapsed = 0f;
+            while (elapsed < stepCooldown)
+            {
+                elapsed += Time.deltaTime;
+                rect.anchoredPosition = Vector2.Lerp(startPos, endPos, Mathf.Clamp01(elapsed / stepCooldown));
+                yield return null;
+            }
+
+            rect.anchoredPosition = endPos;
+            currentCheckpoint = nextCheckpoint;
+            checkpointsReached++;
+        }
+
+        moveCoroutine = null;
     }
 }
