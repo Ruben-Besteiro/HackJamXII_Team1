@@ -26,6 +26,11 @@ public class CardManagement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textTiresValue;
     [SerializeField] private TextMeshProUGUI textChasisValue;
 
+    [Header("Time Card References")] 
+    [SerializeField] private Image imageTimeFill;
+    [SerializeField] private float maxTime = 10f;
+    private float currentTime = 0f;
+
     
 
     private void Start()
@@ -33,6 +38,8 @@ public class CardManagement : MonoBehaviour
         CardsShuffle();
         UpdateUI();
         SetUpCard();
+        // Time card control
+        ResetTimer();
     }
 
     private void SetUpCard()
@@ -90,6 +97,7 @@ public class CardManagement : MonoBehaviour
         }
         
         SetUpCard();
+        ResetTimer();
     }
 
     private void CardsShuffle()
@@ -106,5 +114,22 @@ public class CardManagement : MonoBehaviour
             CardsReference.cards[i] = CardsReference.cards[randomIndex];
             CardsReference.cards[randomIndex] = temp;
         }
+    }
+
+    private void ResetTimer()
+    {
+        currentTime = maxTime;
+        imageTimeFill.fillAmount = 1f;
+    }
+
+    private void Update()
+    {
+        currentTime -= Time.deltaTime;
+        currentTime = Mathf.Clamp(currentTime, 0f, maxTime);
+        imageTimeFill.fillAmount = currentTime / maxTime;
+
+        if (currentTime <= 0f)
+            NextCard();
+            
     }
 }
