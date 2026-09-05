@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_Refill
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: Tienes que hacer un giro brusco para repostar gasolina
-  cardImage: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  cardImage: {fileID: 0}
   cardTitle: Repostar
   cardRightChoiceText: "\xA1Vamos a hacer!"
   cardLeftChoiceText: Seguimos con la carrera

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -118,6 +119,9 @@ public class RaceManager : MonoBehaviour
         if (generalTimeBar == null || initialGeneralTimer <= 0) return;
 
         generalTimeBar.fillAmount = generalTimer / initialGeneralTimer;
+
+        if (generalTimeBar.fillAmount <= 0f)
+            SceneManager.LoadScene("EndGame");
     }
 
     /// <summary>

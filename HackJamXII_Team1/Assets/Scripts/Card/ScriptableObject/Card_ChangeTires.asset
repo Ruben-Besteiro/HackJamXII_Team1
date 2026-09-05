@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_ChangeTires
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: Piensas en hacer parada en boxes para cambiar las ruedas
-  cardImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  cardImage: {fileID: 0}
   cardTitle: Cambio de ruedas
   cardRightChoiceText: Pon otras ruedas
   cardLeftChoiceText: Seguimos con las mismas ruedas

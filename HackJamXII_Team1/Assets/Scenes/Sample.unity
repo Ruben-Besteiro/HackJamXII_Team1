@@ -3525,6 +3525,7 @@ MonoBehaviour:
   tires: 1
   fuel: 1
   chasis: 1
+  stepCooldown: 0.2
   side: 1
   lateralOffset: 3
   checkpoints: []
@@ -3847,6 +3848,7 @@ MonoBehaviour:
   tires: 1
   fuel: 1
   chasis: 1
+  stepCooldown: 0.2
   side: 0
   lateralOffset: 3
   checkpoints: []

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "\xBFDeber\xEDa calentar las ruedas?"
   cardImage: {fileID: 0}
-  cardTitle: 
+  cardTitle: Calentar Ruedas
   cardRightChoiceText: "\xA1SI!"
   cardLeftChoiceText: Paso...
   cardGasValueRight: 0
