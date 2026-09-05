@@ -18,11 +18,17 @@ public class RaceManager : MonoBehaviour
 {
     public static RaceManager Instance { get; private set; }
 
+    [Header("Cuenta atrás")]
+    private int countdownValue = 3;
+    [SerializeField] private TextMeshProUGUI countdownText;
+
     [Header("Coches")]
     [SerializeField] private Car car1;
     [SerializeField] private Car car2;
-    [SerializeField] private Car leader;
+    private Car leader;
 
+
+    [Header("Tiempo")]
     [SerializeField] private Image generalTimeBar;
     public float generalTimer = 180f;
 
