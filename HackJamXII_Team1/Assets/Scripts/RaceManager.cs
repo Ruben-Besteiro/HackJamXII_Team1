@@ -20,14 +20,31 @@ public class RaceManager : MonoBehaviour
     public static RaceManager Instance { get; private set; }
 
     [Header("Cuenta atrás")]
-    private int countdownValue = 3;
+    [SerializeField] private float countdownDuration = 3f;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private GameObject countdownCanvas;
+
+    private float countdownTimeRemaining;
+
+    // Se pone a "true" en cuanto termina la cuenta atrás. Mientras sea
+    // "false" la carrera no avanza (ni el tiempo general ni las cartas).
+    public bool RaceStarted { get; private set; }
 
     [Header("Coches")]
     [SerializeField] private Car car1;
     [SerializeField] private Car car2;
     private Car leader;
 
+    /// <summary>
+    /// Número del coche ganador (1 o 2). Se fija una única vez, en el
+    /// momento exacto en que termina la carrera (ver "RefreshGeneralTimeBar"),
+    /// comparando "checkpointsReached" de cada coche. Debe calcularse ahí y
+    /// no más tarde: "car1"/"car2" viven en la escena "Sample" y se destruyen
+    /// en cuanto esta se descarga, así que para cuando "ResultsManager" (ya
+    /// en la escena "Results") pregunta por el ganador, esas referencias ya
+    /// no serían válidas.
+    /// </summary>
+    public int WinnerCarNumber { get; private set; } = 1;
 
     [Header("Tiempo")]
     [SerializeField] private Image generalTimeBar;
@@ -37,20 +54,9 @@ public class RaceManager : MonoBehaviour
     // para calcular qué fracción de la barra hay que rellenar.
     private float initialGeneralTimer;
 
-    // Los tiempos para que el jugador decida qué opción usar para su carta
-    public float maxTimeForCards;
-    public float timeRemainingForCard1;
-    public float timeRemainingForCard2;
-
     [Header("Textos de vueltas (UI)")]
     [SerializeField] private TextMeshProUGUI lapCounterText1;
     [SerializeField] private TextMeshProUGUI lapCounterText2;
-
-    [Header("Debug: sistema de cartas")]
-    [SerializeField] private TextMeshPro debugText1;
-    [SerializeField] private TextMeshPro debugText2;
-    [SerializeField] private Image realTimeBar1;
-    [SerializeField] private Image realTimeBar2;
 
     private int laps1 = 0;
     private int laps2 = 0;
@@ -59,9 +65,6 @@ public class RaceManager : MonoBehaviour
     // misma vuelta varias veces mientras el valor no cambia.
     private int lastCheckpointsReached1 = 0;
     private int lastCheckpointsReached2 = 0;
-
-    // Cuenta atrás hasta la próxima carta de prueba (entre 1 y 3 segundos).
-    private float timeUntilNextCardTest;
 
     void Awake()
     {
@@ -72,6 +75,7 @@ public class RaceManager : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void OnDestroy()
@@ -84,29 +88,59 @@ public class RaceManager : MonoBehaviour
 
     void Start()
     {
-        timeUntilNextCardTest = Random.Range(1f, 3f);
-
         initialGeneralTimer = generalTimer;
         RefreshGeneralTimeBar();
+
+        countdownTimeRemaining = countdownDuration;
+        RaceStarted = false;
+        UpdateCountdownText();
     }
 
     void Update()
     {
+        if (!RaceStarted)
+        {
+            UpdateCountdown();
+            return;
+        }
+
         UpdateGeneralTimer();
 
         UpdateLapCounter(car1, ref lastCheckpointsReached1, ref laps1, lapCounterText1);
         UpdateLapCounter(car2, ref lastCheckpointsReached2, ref laps2, lapCounterText2);
 
         UpdateLeader();
-
-        //UpdateCardTestHelper();
     }
 
     /// <summary>
-    /// Mientras quede tiempo, resta "Time.deltaTime" a "generalTimer" y
-    /// refresca "generalTimeBar" con el nuevo valor, fotograma a fotograma
-    /// para que la barra baje de forma continua en vez de "a saltitos".
+    /// Cuenta atrás previa a la carrera: resta "Time.deltaTime" a
+    /// "countdownTimeRemaining" y refresca "countdownText" con los segundos
+    /// que quedan (sin decimales). Al llegar a 0 oculta "countdownCanvas" y
+    /// marca "RaceStarted" para que la partida empiece de verdad.
     /// </summary>
+    private void UpdateCountdown()
+    {
+        countdownTimeRemaining = Mathf.Max(0f, countdownTimeRemaining - Time.deltaTime);
+        UpdateCountdownText();
+
+        if (countdownTimeRemaining <= 0f)
+        {
+            RaceStarted = true;
+
+            if (countdownCanvas != null)
+            {
+                countdownCanvas.SetActive(false);
+            }
+        }
+    }
+
+    private void UpdateCountdownText()
+    {
+        if (countdownText == null) return;
+
+        countdownText.text = Mathf.CeilToInt(countdownTimeRemaining).ToString();
+    }
+
     private void UpdateGeneralTimer()
     {
         if (generalTimer <= 0) return;
@@ -127,7 +161,13 @@ public class RaceManager : MonoBehaviour
         generalTimeBar.fillAmount = generalTimer / initialGeneralTimer;
 
         if (generalTimeBar.fillAmount <= 0f)
-            SceneManager.LoadScene("EndGame");
+        {
+            // Hay que fijar el ganador aquí, antes de cambiar de escena:
+            // "car1"/"car2" pertenecen a "Sample" y se destruyen en cuanto
+            // se descarga, así que ya no se podrían consultar desde "Results".
+            WinnerCarNumber = (car1 != null && car2 != null && car2.checkpointsReached > car1.checkpointsReached) ? 2 : 1;
+            GameSceneManager.Instance.LoadScene("Results", SceneTransition.FadeBlack);
+        }
     }
 
     /// <summary>
@@ -183,59 +223,4 @@ public class RaceManager : MonoBehaviour
             lapCounterText2.fontStyle = leader == car2 ? FontStyles.Bold : FontStyles.Normal;
         }
     }
-
-
-    /*/// <summary>
-    /// Helper de prueba para el sistema de cartas: cada cierto tiempo aleatorio
-    /// (entre 1 y 3 segundos) "reparte" una carta a Car 1 o Car 2 -a modo de
-    /// prueba, sin lógica real de reparto todavía-, mostrando "Prueba" en su
-    /// texto de debug y copiando el "maxTimeForCards" actual a su
-    /// "timeRemainingForCard" correspondiente. Mientras tanto, "maxTimeForCards"
-    /// se va reduciendo un 1% cada segundo, y las barras "Real Time Bar" se
-    /// rellenan según cuánto le queda a cada carta respecto a ese máximo.
-    /// </summary>
-    private void UpdateCardTestHelper()
-    {
-        maxTimeForCards *= Mathf.Pow(0.985f, Time.deltaTime);
-
-        // Cuenta atrás de cada carta ya repartida, para que la barra se vaya
-        // vaciando en vez de quedarse llena para siempre.
-        timeRemainingForCard1 = Mathf.Max(0f, timeRemainingForCard1 - Time.deltaTime);
-        timeRemainingForCard2 = Mathf.Max(0f, timeRemainingForCard2 - Time.deltaTime);
-
-        timeUntilNextCardTest -= Time.deltaTime;
-        if (timeUntilNextCardTest <= 0f)
-        {
-            timeUntilNextCardTest = Random.Range(1f, 3f);
-
-            if (Random.value < 0.5f)
-            {
-                TriggerCardTest(debugText1, ref timeRemainingForCard1);
-            }
-            else
-            {
-                TriggerCardTest(debugText2, ref timeRemainingForCard2);
-            }
-        }
-
-        UpdateRealTimeBar(realTimeBar1, timeRemainingForCard1);
-        UpdateRealTimeBar(realTimeBar2, timeRemainingForCard2);
-    }
-
-    private void TriggerCardTest(TextMeshPro debugText, ref float timeRemainingForCard)
-    {
-        if (debugText != null)
-        {
-            debugText.text = "Prueba";
-        }
-
-        timeRemainingForCard = maxTimeForCards;
-    }
-
-    private void UpdateRealTimeBar(Image realTimeBar, float timeRemainingForCard)
-    {
-        if (realTimeBar == null || maxTimeForCards <= 0f) return;
-
-        realTimeBar.fillAmount = Mathf.Clamp01(timeRemainingForCard / maxTimeForCards);
-    }*/
 }
