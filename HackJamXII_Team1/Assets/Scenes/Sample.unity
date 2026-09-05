@@ -1123,6 +1123,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1816287004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820168682 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4623662820740462429, guid: 6647d66b0b92d374e86bc5072f123631,
+    type: 3}
+  m_PrefabInstance: {fileID: 4556633056871461351}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &832974690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,6 +1383,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5e40c4de213eff41b50f9c098b680b7, type: 3}
+--- !u!114 &922295052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6653667955884524477, guid: 6647d66b0b92d374e86bc5072f123631,
+    type: 3}
+  m_PrefabInstance: {fileID: 4556633056871461351}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &945216834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,8 +1828,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4336,6 +4361,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RaceManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2281503111140449191, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: m_Name
+      value: HUD Canvas
+      objectReference: {fileID: 0}
     - target: {fileID: 2645607001899207733, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}
       propertyPath: car1
@@ -4381,12 +4411,32 @@ PrefabInstance:
       propertyPath: countdownCanvas
       value: 
       objectReference: {fileID: 265045785}
+    - target: {fileID: 2645607001899207733, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: checkpointCounterText1
+      value: 
+      objectReference: {fileID: 820168682}
+    - target: {fileID: 2645607001899207733, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: checkpointCounterText2
+      value: 
+      objectReference: {fileID: 922295052}
+    - target: {fileID: 3994068194968649591, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: m_Name
+      value: Checkpoint Counter 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4623662820740462429, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}
       propertyPath: m_text
       value: '0
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 5394040859833309811, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: m_Name
+      value: Checkpoint Counter 2
       objectReference: {fileID: 0}
     - target: {fileID: 6653667955884524477, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}

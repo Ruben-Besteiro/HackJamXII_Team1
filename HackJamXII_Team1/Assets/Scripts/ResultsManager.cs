@@ -11,16 +11,14 @@ using UnityEngine;
 /// </summary>
 public class ResultsManager : MonoBehaviour
 {
-    [Header("Tiempo de espera antes de mover la cámara")]
     [SerializeField] private float delayBeforeReveal = 1;
 
     [Header("Cámara")]
     [SerializeField] private Transform resultsCamera;
     [SerializeField] private float cameraMoveSpeed = 2;
 
-    [Header("Podios (Cylinder 1 = Car 1, Cylinder 2 = Car 2)")]
-    [SerializeField] private Transform cylinder1;
-    [SerializeField] private Transform cylinder2;
+    [SerializeField] private Transform car1;
+    [SerializeField] private Transform car2;
 
     private void Start()
     {
@@ -33,31 +31,20 @@ public class ResultsManager : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeReveal);
 
         SoundManager.Instance.PlaySFX(SFX.Results);
-        Transform winnerCylinder = GetWinnerCylinder();
-        if (resultsCamera == null || winnerCylinder == null) yield break;
+        Transform winner = GetWinner();
+        if (resultsCamera == null || winner == null) yield break;
 
-        yield return MoveCameraTo(winnerCylinder.position.x);
+        yield return MoveCameraToWinner(winner.position.x);
     }
 
-    /// <summary>
-    /// Car 1 -> Cylinder 1, Car 2 -> Cylinder 2. Si no hay RaceManager
-    /// (por ejemplo, si se abre esta escena suelta para probarla) se
-    /// usa Cylinder 1 por defecto.
-    /// </summary>
-    private Transform GetWinnerCylinder()
+    private Transform GetWinner()
     {
-        if (RaceManager.Instance == null) return cylinder1;
+        if (RaceManager.Instance == null) return car1;
 
-        return RaceManager.Instance.WinnerCarNumber == 2 ? cylinder2 : cylinder1;
+        return RaceManager.Instance.WinnerCarNumber == 2 ? car2 : car1;
     }
 
-    /// <summary>
-    /// Desplaza "resultsCamera" a izquierda o derecha (según toque) con un
-    /// lerp en el eje X hasta "targetX" -la X del Cylinder ganador-,
-    /// manteniendo su altura y profundidad, para que su eje azul quede
-    /// alineado con el del ganador.
-    /// </summary>
-    private IEnumerator MoveCameraTo(float targetX)
+    private IEnumerator MoveCameraToWinner(float targetX)
     {
         Vector3 startPos = resultsCamera.position;
         Vector3 endPos = new Vector3(targetX, startPos.y, startPos.z);

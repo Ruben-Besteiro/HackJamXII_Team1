@@ -66,6 +66,14 @@ public class CardManagement : MonoBehaviour
 
     private void Start()
     {
+        // Cada jugador necesita su propio mazo: si dos CardManagement
+        // comparten el mismo SO_CardContainer (mismo asset), barajar uno
+        // reordenaría también el mazo del otro. Clonamos el contenedor en
+        // runtime para que el shuffle y el consumo de cartas de este
+        // jugador no afecten al asset original ni a otras instancias.
+        if (CardsReference != null)
+            CardsReference = Instantiate(CardsReference);
+
         PrepareUI();
         CardsShuffle();
         UpdateUI();
