@@ -141,11 +141,6 @@ public class RaceManager : MonoBehaviour
         countdownText.text = Mathf.CeilToInt(countdownTimeRemaining).ToString();
     }
 
-    /// <summary>
-    /// Mientras quede tiempo, resta "Time.deltaTime" a "generalTimer" y
-    /// refresca "generalTimeBar" con el nuevo valor, fotograma a fotograma
-    /// para que la barra baje de forma continua en vez de "a saltitos".
-    /// </summary>
     private void UpdateGeneralTimer()
     {
         if (generalTimer <= 0) return;
