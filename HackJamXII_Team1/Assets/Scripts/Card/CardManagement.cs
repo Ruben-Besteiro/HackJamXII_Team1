@@ -30,6 +30,11 @@ public class CardManagement : MonoBehaviour
     [Header("Time Card References")]
     [SerializeField] private Image imageTimeFill;
 
+    // Canvas raíz de esta carta: se desactiva mientras dure la cuenta atrás
+    // inicial para que la carta no se vea (ni sea interactuable) hasta que
+    // la partida empiece de verdad.
+    [SerializeField] private Canvas cardCanvas;
+
     // Se usa si no hay un RaceManager en la escena (por ejemplo, probando
     // este canvas de forma aislada).
     [SerializeField] private float fallbackMaxTime = 10f;
@@ -60,6 +65,13 @@ public class CardManagement : MonoBehaviour
         SetUpCard();
         // Time card control
         ResetTimer();
+
+        // Si todavía estamos en la cuenta atrás, la carta no debe aparecer
+        // hasta que el RaceManager marque el inicio de la partida.
+        if (cardCanvas != null && RaceManager.Instance != null && !RaceManager.Instance.RaceStarted)
+        {
+            cardCanvas.enabled = false;
+        }
     }
 
     private void SetUpCard()
@@ -111,6 +123,7 @@ public class CardManagement : MonoBehaviour
 
     private void NextCard()
     {
+        SoundManager.Instance.PlaySFX(SFX.Woosh);
         indexCards++;
         if (indexCards >= CardsReference.cards.Length)
         {
@@ -145,8 +158,6 @@ public class CardManagement : MonoBehaviour
         maxTime = CalculateMaxTime();
         currentTime = maxTime;
         imageTimeFill.fillAmount = 1f;
-
-        // Debug.Log($"[CardManagement] Nueva carta: la TimeBar tardará {maxTime:0.00}s en vaciarse.");
     }
 
     /// <summary>
@@ -169,6 +180,15 @@ public class CardManagement : MonoBehaviour
 
     private void Update()
     {
+        // Mientras dure la cuenta atrás inicial del RaceManager, la partida
+        // no ha empezado todavía: no consumimos el tiempo de la carta.
+        if (RaceManager.Instance != null && !RaceManager.Instance.RaceStarted)
+            return;
+
+        // La cuenta atrás acaba de terminar: ahora sí mostramos la carta.
+        if (cardCanvas != null && !cardCanvas.enabled)
+            cardCanvas.enabled = true;
+
         currentTime -= Time.deltaTime;
         currentTime = Mathf.Clamp(currentTime, 0f, maxTime);
         imageTimeFill.fillAmount = currentTime / maxTime;

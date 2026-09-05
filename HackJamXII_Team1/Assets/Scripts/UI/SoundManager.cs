@@ -67,11 +67,11 @@ public class SoundManager : MonoBehaviour
     {
         switch (sceneName)
         {
-            case "MainMenu":
-                PlayMusic(Music.MainMenu);
+            case "Menu":
+                PlayMusic(Music.Menu);
                 break;
-            case "SampleScene":
-                PlayMusic(Music.SampleScene);
+            case "Sample":
+                PlayMusic(Music.Game);
                 break;
         }
     }
@@ -94,22 +94,31 @@ public class SoundManager : MonoBehaviour
         if (sfxDict.TryGetValue(sfx, out AudioClip clip) && clip != null)
             sfxSource.PlayOneShot(clip);
     }
+
+    // Volumen actual de los efectos de sonido, para que quien reproduzca un
+    // SFX por su cuenta (p. ej. un AudioSource en loop en cada coche) pueda
+    // mantenerse en línea con el volumen general configurado aquí.
+    public float SfxVolume => sfxVolume;
+
+    public AudioClip GetSFXClip(SFX sfx)
+    {
+        sfxDict.TryGetValue(sfx, out AudioClip clip);
+        return clip;
+    }
 }
 
 public enum Music
 {
-    MainMenu,
-    SampleScene
+    Menu,
+    Game,
 }
 
 public enum SFX
 {
     Yes,
-    No,
-    TalkPlayer,
-    TalkNpc1,
-    Footsteps,
-    Pause
+    Woosh,
+    Engine,
+    Results
 }
 
 [Serializable]

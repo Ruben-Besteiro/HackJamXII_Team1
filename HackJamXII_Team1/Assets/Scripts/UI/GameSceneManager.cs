@@ -36,8 +36,6 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadScene(string sceneName, SceneTransition transition)
     {
-        //SoundManager_OLD.Instance.StopMusic();
-
         if (transition == SceneTransition.Instant)
         {
             SceneManager.LoadScene(sceneName);

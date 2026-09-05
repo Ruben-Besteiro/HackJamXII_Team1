@@ -46,10 +46,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1556d0ad236b7754f809255053e6a969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager_OLD
-  musicEntries: []
+  musicEntries:
+  - track: 0
+    clip: {fileID: 8300000, guid: 42dc32a491662764d9ed3a342c604c71, type: 3}
+  - track: 1
+    clip: {fileID: 8300000, guid: e63e87dd3a98d334f80425a18943c7fe, type: 3}
   sfxEntries:
   - sfx: 0
     clip: {fileID: 8300000, guid: 269e037c3b09b684092488013628e049, type: 3}
+  - sfx: 1
+    clip: {fileID: 8300000, guid: 48615f3ef7eefe24a81be40cbb7cbc49, type: 3}
+  - sfx: 2
+    clip: {fileID: 8300000, guid: cf7c666fbbbc4a24ea1fa514eee65efd, type: 3}
+  - sfx: 3
+    clip: {fileID: 8300000, guid: 6b861dcd82042fa459094c0db9a3cbd4, type: 3}
   musicVolume: 0.5
   sfxVolume: 1
 --- !u!82 &3004792791418961158

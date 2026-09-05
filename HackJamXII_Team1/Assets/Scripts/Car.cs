@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,9 @@ using Object = UnityEngine.Object;
 /// <summary>
 /// Mueve un icono de UI (uno de los "Square") saltando de casilla en casilla
 /// a lo largo del circuito, formado por todos los GameObjects cuyo nombre
-/// empieza por "Checkpoint". Cada "timeBetweenCheckpoints" milisegundos, el coche se
-/// teletransporta a la siguiente casilla de la lista, desplazado lateralmente
-/// (izquierda o derecha) respecto al vector que va de la casilla actual a la siguiente,
+/// empieza por "Checkpoint". Cada carta resuelta avanza al coche un número de
+/// casillas (ver "UpdateCarStatus"), desplazado lateralmente (izquierda o
+/// derecha) respecto al vector que va de la casilla actual a la siguiente,
 /// para que varios coches en la misma casilla no queden superpuestos.
 /// </summary>
 [RequireComponent(typeof(RectTransform))]
@@ -24,7 +23,6 @@ public class Car : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] public int checkpointsReached = 0;        // Lo lejos que hemos llegado
-    [SerializeField] public float timeBetweenCheckpoints;      // La "velocidad"
     [SerializeField] public int tires = 1;       // El desgaste de los neumáticos
     [SerializeField] public int fuel = 1;        // El combustible que queda
     [SerializeField] public int chasis = 1;        // Estado del coche
@@ -41,12 +39,16 @@ public class Car : MonoBehaviour
     private RectTransform rect;
     public List<RectTransform> checkpoints = new List<RectTransform>();
     private int currentCheckpoint = 0;
-    private float timer = 0f;
 
     // Movimiento pendiente: en vez de teletransportarse a la casilla final,
     // el coche avanza de una en una con "stepCooldown" segundos entre saltos.
     private int pendingSteps = 0;
     private Coroutine moveCoroutine;
+
+    // AudioSource propio para el sonido de motor: así cada coche puede tener
+    // su propio "Engine" sonando en loop mientras se mueve, sin pisar el de
+    // otro coche que se esté moviendo a la vez.
+    private AudioSource engineAudioSource;
 
     private void Awake()
     {
@@ -57,22 +59,10 @@ public class Car : MonoBehaviour
         {
             rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
         }
-    }
 
-    // TODO: Esta función no se hace en Update, se hace a cada llamada de Next Card, suscribir a evento
-    private void Update()
-    {
-        return;
-        if (checkpoints.Count == 0) return;
-
-        timer += Time.deltaTime * 1000f; // deltaTime está en segundos, timeBetweenCheckpoints en ms
-        if (timer >= timeBetweenCheckpoints)
-        {
-            timer = 0f;
-            currentCheckpoint = (currentCheckpoint + 1) % checkpoints.Count;
-            checkpointsReached++;
-            rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
-        }
+        engineAudioSource = gameObject.AddComponent<AudioSource>();
+        engineAudioSource.playOnAwake = false;
+        engineAudioSource.loop = true;
     }
 
     /// <summary>
@@ -136,6 +126,7 @@ public class Car : MonoBehaviour
             moveCoroutine = null;
         }
         pendingSteps = 0;
+        StopEngineSound();
     }
 
     // Update car status depends on the values
@@ -172,6 +163,8 @@ public class Car : MonoBehaviour
     /// </summary>
     private IEnumerator MoveStepByStep()
     {
+        StartEngineSound();
+
         while (pendingSteps > 0 && checkpoints.Count > 0)
         {
             pendingSteps--;
@@ -193,6 +186,33 @@ public class Car : MonoBehaviour
             checkpointsReached++;
         }
 
+        StopEngineSound();
         moveCoroutine = null;
+    }
+
+    /// <summary>
+    /// Arranca (o retoma) el sonido de motor en loop para este coche. Si ya
+    /// estaba sonando (p. ej. porque llegaron más "pendingSteps" mientras el
+    /// coche seguía en marcha) no hace nada.
+    /// </summary>
+    private void StartEngineSound()
+    {
+        if (engineAudioSource == null || SoundManager.Instance == null) return;
+        if (engineAudioSource.isPlaying) return;
+
+        AudioClip clip = SoundManager.Instance.GetSFXClip(SFX.Engine);
+        if (clip == null) return;
+
+        engineAudioSource.clip = clip;
+        engineAudioSource.volume = SoundManager.Instance.SfxVolume;
+        engineAudioSource.Play();
+    }
+
+    private void StopEngineSound()
+    {
+        if (engineAudioSource != null)
+        {
+            engineAudioSource.Stop();
+        }
     }
 }
