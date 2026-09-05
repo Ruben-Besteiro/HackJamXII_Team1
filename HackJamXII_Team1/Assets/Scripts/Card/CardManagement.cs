@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,9 +24,14 @@ public class CardManagement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textLeftChoice;
     
     [Header("Values Config")]
-    [SerializeField] private TextMeshProUGUI textGasValue;
-    [SerializeField] private TextMeshProUGUI textTiresValue;
-    [SerializeField] private TextMeshProUGUI textChasisValue;
+    [SerializeField] private RectTransform parentGasValues;
+    private List<Image> gasValuesArray;
+    [SerializeField] private RectTransform parentTiresValues;
+    private List<Image> tiresValuesArray;
+    [SerializeField] private RectTransform parentChasisValues;
+    private List<Image> chasisValuesArray;
+    [SerializeField] private Color activateValuesColor; 
+    [SerializeField] private Color deactivateValuesColor; 
 
     [Header("Time Card References")]
     [SerializeField] private Image imageTimeFill;
@@ -60,6 +66,7 @@ public class CardManagement : MonoBehaviour
 
     private void Start()
     {
+        PrepareUI();
         CardsShuffle();
         UpdateUI();
         SetUpCard();
@@ -114,11 +121,45 @@ public class CardManagement : MonoBehaviour
         NextCard();
     }
 
+    private void PrepareUI()
+    {
+        gasValuesArray = new List<Image>();
+        tiresValuesArray = new List<Image>();
+        chasisValuesArray = new List<Image>();
+        
+        foreach (Transform value in parentGasValues.transform)
+            gasValuesArray.Add(value.GetComponent<Image>());
+        
+        foreach (Transform value in parentTiresValues.transform)
+            tiresValuesArray.Add(value.GetComponent<Image>());
+        
+        foreach (Transform value in parentChasisValues.transform)
+            chasisValuesArray.Add(value.GetComponent<Image>());
+    }
+
     private void UpdateUI()
     {
-        textGasValue.text = GasValue.ToString() + "/5";
-        textTiresValue.text = TireValue.ToString() + "/5";
-        textChasisValue.text = ChasisValue.ToString() + "/5";
+        int maxGas = gasValuesArray.Count;
+
+        for (int i = 0; i < maxGas; i++)
+        {
+            bool isDeactivated = i < (maxGas - GasValue);
+            gasValuesArray[i].color = isDeactivated ? deactivateValuesColor : activateValuesColor;
+        }
+
+        int maxTires = tiresValuesArray.Count;
+        for (int i = 0; i < maxTires; i++)
+        {
+            bool isDeactivated = i < (maxTires - TireValue);
+            tiresValuesArray[i].color = isDeactivated ? deactivateValuesColor : activateValuesColor;
+        }
+
+        int maxChasis = chasisValuesArray.Count;
+        for (int i = 0; i < maxChasis; i++)
+        {
+            bool isDeactivated = i < (maxChasis - ChasisValue);
+            chasisValuesArray[i].color = isDeactivated ? deactivateValuesColor : activateValuesColor;
+        }
     }
 
     private void NextCard()

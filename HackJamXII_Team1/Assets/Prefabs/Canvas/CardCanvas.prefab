@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.59
+  m_PixelsPerUnitMultiplier: 0.27
 --- !u!114 &8539364554429120992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3580,10 +3580,13 @@ MonoBehaviour:
   textTitle: {fileID: 3707504277686443849}
   textRightChoice: {fileID: 6074781383054743474}
   textLeftChoice: {fileID: 4181513570059820812}
-  textGasValue: {fileID: 0}
-  textTiresValue: {fileID: 0}
-  textChasisValue: {fileID: 0}
+  parentGasValues: {fileID: 4738106178083127319}
+  parentTiresValues: {fileID: 3917238729216810170}
+  parentChasisValues: {fileID: 2787892391294387090}
+  activateValuesColor: {r: 1, g: 1, b: 1, a: 1}
+  deactivateValuesColor: {r: 0.32156864, g: 0.32156864, b: 0.32156864, a: 1}
   imageTimeFill: {fileID: 8714764675657802298}
+  cardCanvas: {fileID: 0}
   fallbackMaxTime: 10
   minTimeBarDuration: 2
   referenceGeneralTimer: 180
@@ -3676,10 +3679,13 @@ MonoBehaviour:
   textTitle: {fileID: 841046408542832726}
   textRightChoice: {fileID: 37094182550934277}
   textLeftChoice: {fileID: 1027105019147435747}
-  textGasValue: {fileID: 0}
-  textTiresValue: {fileID: 0}
-  textChasisValue: {fileID: 0}
+  parentGasValues: {fileID: 1254128849396685270}
+  parentTiresValues: {fileID: 4440967815400645069}
+  parentChasisValues: {fileID: 2861214177128035319}
+  activateValuesColor: {r: 1, g: 1, b: 1, a: 1}
+  deactivateValuesColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
   imageTimeFill: {fileID: 1069246438510034417}
+  cardCanvas: {fileID: 0}
   fallbackMaxTime: 10
   minTimeBarDuration: 2
   referenceGeneralTimer: 180
