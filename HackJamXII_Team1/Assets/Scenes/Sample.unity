@@ -3441,7 +3441,6 @@ MonoBehaviour:
   countdownText: {fileID: 1560964843}
   car1: {fileID: 1579744376}
   car2: {fileID: 1496502879}
-  leader: {fileID: 0}
   generalTimeBar: {fileID: 534877670}
   generalTimer: 180
   maxTimeForCards: 10
@@ -4307,17 +4306,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1069246438510034417, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
-        type: 3}
-      propertyPath: m_Type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1069246438510034417, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 723d4f56d1ae2aa44bbe4bc159ab1757,
-        type: 3}
     - target: {fileID: 1207110533022571813, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4708,6 +4696,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6389097397192104842, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
+        type: 3}
+      propertyPath: SelectionOffset
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6630815698390273842, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4773,6 +4766,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7632293884205581581, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
+        type: 3}
+      propertyPath: SelectionOffset
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 7674109648067607054, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4823,22 +4821,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8714416044380501074, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.32226562
-      objectReference: {fileID: 0}
-    - target: {fileID: 8714764675657802298, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
-        type: 3}
-      propertyPath: m_Type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8714764675657802298, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 723d4f56d1ae2aa44bbe4bc159ab1757,
-        type: 3}
     - target: {fileID: 8760575330972792943, guid: 8a6f595ee142d9848a1b0c8ab72b64a7,
         type: 3}
       propertyPath: m_AnchorMax.y

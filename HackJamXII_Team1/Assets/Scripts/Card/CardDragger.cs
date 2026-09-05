@@ -17,7 +17,7 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     [SerializeField] private RectTransform LeftChoice;
     private float _initialYPositionChoice;
     [SerializeField] private float positionYOffset = -20f;
-    private float dragFactor;
+    [HideInInspector] public float dragFactor;
 
     [Header("Drag Selection")] 
     [SerializeField] private float SelectionOffset = 0.5f;
@@ -35,7 +35,7 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition = _initialPosition;
+        // _rectTransform.anchoredPosition = _initialPosition;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -46,25 +46,44 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _rectTransform.anchoredPosition =
             new Vector2(Mathf.Clamp(clampedX, -_limitOffsetPosition, _limitOffsetPosition), 0f);
 
-        dragFactor = (clampedX - _initialPosition.x) / _limitOffsetPosition;
+        float normalizedX = (clampedX - _initialPosition.x) / _limitOffsetPosition;
+        ApplyDragPosition(normalizedX);
+    }
 
+    public void DragWithJoysticks(float joystick)
+    {
+        ApplyDragPosition(joystick);
+    }
+
+    private void ApplyDragPosition(float _normalizedFactor)
+    {
+        dragFactor = Mathf.Clamp(_normalizedFactor, -1f, 1);
+        
+        float targetX = _initialPosition.x + (dragFactor * _limitOffsetPosition);
+        _rectTransform.anchoredPosition = new Vector2(targetX, _initialPosition.y);
+        
         float rightIntensity = Mathf.Max(0f, dragFactor);
         float leftIntensity = Mathf.Max(0f, -dragFactor);
-
+        
         if (RightChoice != null)
         {
             float targetYRight = _initialYPositionChoice + (positionYOffset * rightIntensity);
-            RightChoice.anchoredPosition = new Vector2( _rectTransform.anchoredPosition.x, targetYRight);
+            RightChoice.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, targetYRight);
         }
 
         if (LeftChoice != null)
         {
             float targetYLeft = _initialYPositionChoice + (positionYOffset * leftIntensity);
-            LeftChoice.anchoredPosition = new Vector2( _rectTransform.anchoredPosition.x, targetYLeft);
+            LeftChoice.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, targetYLeft);
         }
-}
+    }
 
     public void OnEndDrag(PointerEventData eventData)
+    {
+        EndDrag();
+    }
+
+    public void EndDrag()
     {
         if (dragFactor > SelectionOffset)
             if (cardManagement != null)
