@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30f16870ae6cb174288eaf0325ae794d, type: 3}
-  m_Name: Tipo 2
+  m_Name: Card_ProChasis3_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
-  cardDescripton: Hay 12
+  cardDescripton: "Se ha detectado un leve pinchazo. Pero solo puedes poner neum\xE1ticos
+    viejos."
   cardImage: {fileID: 0}
-  cardTitle: 2
-  cardRightChoiceText: 
-  cardLeftChoiceText: 
+  cardTitle: Pinchazo lento
+  cardRightChoiceText: Aguantamos
+  cardLeftChoiceText: "Cambias neum\xE1ticos"
   cardCategory: 0
   cardGasValueLeft: -1
   cardTireValueLeft: 0
