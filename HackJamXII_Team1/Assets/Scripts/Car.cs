@@ -12,9 +12,9 @@ public class Car : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] public int checkpointsReached = 0;        // Lo lejos que hemos llegado
-    [SerializeField] public int tires = 1;       // El desgaste de los neumáticos
-    [SerializeField] public int fuel = 1;        // El combustible que queda
-    [SerializeField] public int chasis = 1;        // Estado del coche
+    [SerializeField] public int tires = 3;       // El desgaste de los neumáticos
+    [SerializeField] public int fuel = 3;        // El combustible que queda
+    [SerializeField] public int chasis = 3;        // Estado del coche
 
     [Tooltip("Segundos de espera entre cada casilla al avanzar varias de golpe.")]
     [SerializeField] private float stepCooldown = 0.2f;
@@ -168,21 +168,19 @@ public class Car : MonoBehaviour
     }
 
     // Update car status depends on the values
+    //
+    // Orden del core loop: el coche se mueve PRIMERO, según las stats que ya
+    // tenía (las que dejó la carta anterior), y solo DESPUÉS se aplican las
+    // stats de la carta que se acaba de elegir (que afectarán al siguiente
+    // movimiento, no a este).
     private void UpdateCarStatus(int currentGas, int currentTires, int currentChasis, bool endedTimer)
     {
-        fuel = currentGas;
-        tires = currentTires;
-        chasis = currentChasis;
-
         int squareMovement = (tires == 0 || chasis == 0) ? 0 : fuel;
-
-        if (endedTimer)
-            return;
 
         // Movement car: en vez de saltar directamente a la casilla final,
         // se encola el avance y se consume de una casilla en una cada
         // "stepCooldown" segundos.
-        if (squareMovement > 0)
+        if (!endedTimer && squareMovement > 0)
         {
             pendingSteps += squareMovement;
 
@@ -191,6 +189,10 @@ public class Car : MonoBehaviour
                 moveCoroutine = StartCoroutine(MoveStepByStep());
             }
         }
+
+        fuel = currentGas;
+        tires = currentTires;
+        chasis = currentChasis;
     }
 
     /// <summary>
@@ -234,6 +236,18 @@ public class Car : MonoBehaviour
         }
 
         StopEngineSound();
+
+        // Al terminar todo el movimiento pendiente, recalculamos la rotación
+        // para que el coche mire hacia el SIGUIENTE checkpoint (el de a
+        // partir de aquí), en vez de quedarse con la orientación del último
+        // tramo recorrido: si el circuito gira justo en la casilla donde para,
+        // esa orientación antigua puede apuntar hacia fuera de la carretera.
+        Vector3 nextDirection = GetDirectionToNext(currentCheckpoint);
+        if (nextDirection != Vector3.zero)
+        {
+            carTransform.rotation = Quaternion.LookRotation(nextDirection, GetPlaneNormal(currentCheckpoint));
+        }
+
         moveCoroutine = null;
     }
 
