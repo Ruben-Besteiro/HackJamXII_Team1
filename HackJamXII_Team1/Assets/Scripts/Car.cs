@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// Mueve un icono de UI (uno de los "Square") saltando de casilla en casilla
@@ -16,11 +18,15 @@ public class Car : MonoBehaviour
 {
     private enum Side { Left, Right }
 
+    [Header("Cards References")] 
+    [SerializeField] private CardManagement cardManager;
+
     [Header("Stats")]
     [SerializeField] public int checkpointsReached = 0;        // Lo lejos que hemos llegado
     [SerializeField] public float timeBetweenCheckpoints;      // La "velocidad"
-    [SerializeField] public float tires = 1;       // El desgaste de los neumáticos
-    [SerializeField] public float fuel = 1;        // El combustible que queda
+    [SerializeField] public int tires = 1;       // El desgaste de los neumáticos
+    [SerializeField] public int fuel = 1;        // El combustible que queda
+    [SerializeField] public int chasis = 1;        // Estado del coche
 
     [Header("Posición en la casilla")]
     [Tooltip("A qué lado del vector (casilla actual -> siguiente casilla) se desplaza este coche.")]
@@ -44,8 +50,10 @@ public class Car : MonoBehaviour
         }
     }
 
+    // TODO: Esta función no se hace en Update, se hace a cada llamada de Next Card, suscribir a evento
     private void Update()
     {
+        return;
         if (checkpoints.Count == 0) return;
 
         timer += Time.deltaTime * 1000f; // deltaTime está en segundos, timeBetweenCheckpoints en ms
@@ -102,5 +110,35 @@ public class Car : MonoBehaviour
     {
         Match match = Regex.Match(checkpointName, @"\d+");
         return match.Success ? int.Parse(match.Value) : 0;
+    }
+
+    private void OnEnable()
+    {
+        cardManager.OnCardChanged += UpdateCarStatus;
+    }
+
+    private void OnDisable()
+    {
+        cardManager.OnCardChanged -= UpdateCarStatus;
+    }
+
+    // Update car status depends on the values 
+    private void UpdateCarStatus(int currentGas, int currentTires, int currentChasis, bool endedTimer)
+    {
+        fuel = currentGas;
+        tires = currentTires;
+        chasis = currentChasis;
+        
+        int squareMovement = (tires == 0 || chasis == 0) ? 0 : fuel;
+
+        if (endedTimer)
+            return;
+        // Movement car
+        currentCheckpoint = (currentCheckpoint + squareMovement) % checkpoints.Count;
+        checkpointsReached += squareMovement;
+        rect.anchoredPosition = GetOffsetPosition(currentCheckpoint);
+
+        if (currentGas == 0)
+            fuel--;
     }
 }

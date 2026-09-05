@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CardManagement : MonoBehaviour
 {
+    public event Action<int, int, int, bool> OnCardChanged;
 
     public int GasValue = 3;
     public int TireValue = 3;
@@ -97,7 +98,9 @@ public class CardManagement : MonoBehaviour
         }
         
         SetUpCard();
+        bool endTimeSelection = currentTime <= 0;
         ResetTimer();
+        OnCardChanged?.Invoke(GasValue, TireValue, ChasisValue, endTimeSelection);
     }
 
     private void CardsShuffle()
