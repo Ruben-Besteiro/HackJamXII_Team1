@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30f16870ae6cb174288eaf0325ae794d, type: 3}
-  m_Name: CardExample 1
+  m_Name: Card_ChangeAxis
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
-  cardDescripton: JAJAJAJAJ
-  cardImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  cardTitle: Adiooooos
-  cardRightChoiceText: Oleeee
-  cardLeftChoiceText: Pedro Sanchez
-  cardGasValueRight: 1
-  cardTireValueRight: -1
-  cardChasisValueRight: 1
-  cardGasValueLeft: 3
-  cardTireValueLeft: -3
-  cardChasisValueLeft: 3
+  cardDescripton: "Un cambio de eje no viene mal para que el coche sea m\xE1s resistente..."
+  cardImage: {fileID: 0}
+  cardTitle: Cambio de eje
+  cardRightChoiceText: Vamos a protegernos
+  cardLeftChoiceText: "\xA1Seguimos a lo loco!"
+  cardGasValueRight: -3
+  cardTireValueRight: 0
+  cardChasisValueRight: 2
+  cardGasValueLeft: 0
+  cardTireValueLeft: 0
+  cardChasisValueLeft: 0

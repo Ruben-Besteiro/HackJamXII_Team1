@@ -13,5 +13,12 @@ MonoBehaviour:
   m_Name: Cards
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardContainer
   cards:
+  - {fileID: 11400000, guid: 5c6b3a9460cc3fb479992c2a4b99866d, type: 2}
+  - {fileID: 11400000, guid: 231d46f8732998648962e51f8c2289a9, type: 2}
+  - {fileID: 11400000, guid: a668dbb212e044e4daff42d6d12692ba, type: 2}
   - {fileID: 11400000, guid: aaa9b5b668802b64ea48bd690705bc77, type: 2}
+  - {fileID: 11400000, guid: 16db994b66edc80468b5230fc17005be, type: 2}
   - {fileID: 11400000, guid: 746ae10728ac92642845152c3eb6a403, type: 2}
+  - {fileID: 11400000, guid: 1ebfba6a8cbd6d041ae4cbc1229f3ae0, type: 2}
+  - {fileID: 11400000, guid: 35c1be8f06bd7934db9f5ca1e2a59412, type: 2}
+  - {fileID: 11400000, guid: de3fa25fe99045a47babca5a37db7b2b, type: 2}

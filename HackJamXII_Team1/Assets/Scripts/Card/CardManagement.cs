@@ -76,17 +76,19 @@ public class CardManagement : MonoBehaviour
 
     public void SetChoice(bool _isRight)
     {
-        Debug.Log("Check choice");
-
         if (_isRight)
         {
             GasValue += CardsReference.cards[indexCards].cardGasValueRight;
+            if (CardsReference.cards[indexCards].cardGasValueRight == 0)
+                GasValue--;
             TireValue += CardsReference.cards[indexCards].cardTireValueRight;
             ChasisValue += CardsReference.cards[indexCards].cardChasisValueRight;
         }
         else
         {
             GasValue += CardsReference.cards[indexCards].cardGasValueLeft;
+            if (CardsReference.cards[indexCards].cardGasValueLeft == 0)
+                GasValue--;
             TireValue += CardsReference.cards[indexCards].cardTireValueLeft;
             ChasisValue += CardsReference.cards[indexCards].cardChasisValueLeft;
         }
@@ -144,7 +146,7 @@ public class CardManagement : MonoBehaviour
         currentTime = maxTime;
         imageTimeFill.fillAmount = 1f;
 
-        Debug.Log($"[CardManagement] Nueva carta: la TimeBar tardará {maxTime:0.00}s en vaciarse.");
+        // Debug.Log($"[CardManagement] Nueva carta: la TimeBar tardará {maxTime:0.00}s en vaciarse.");
     }
 
     /// <summary>

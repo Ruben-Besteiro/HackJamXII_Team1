@@ -162,9 +162,6 @@ public class Car : MonoBehaviour
                 moveCoroutine = StartCoroutine(MoveStepByStep());
             }
         }
-
-        if (currentGas == 0)
-            fuel--;
     }
 
     /// <summary>
