@@ -29,7 +29,7 @@ public class CardManagement : MonoBehaviour
 
     [Header("Time Card References")] 
     [SerializeField] private Image imageTimeFill;
-    [SerializeField] private float maxTime = 10f;
+    [SerializeField] private float maxTime = 15f;
     private float currentTime = 0f;
 
     
