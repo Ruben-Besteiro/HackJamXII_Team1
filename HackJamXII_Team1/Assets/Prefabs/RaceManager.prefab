@@ -48,6 +48,7 @@ MonoBehaviour:
   countdownDuration: 3
   countdownText: {fileID: 0}
   countdownCanvas: {fileID: 0}
+  hudCanvas: {fileID: 7051705214455884728}
   car1: {fileID: 0}
   car2: {fileID: 0}
   generalTimeBar: {fileID: 1614814813923408379}

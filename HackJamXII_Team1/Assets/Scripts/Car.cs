@@ -19,6 +19,9 @@ public class Car : MonoBehaviour
     [Tooltip("Segundos de espera entre cada casilla al avanzar varias de golpe.")]
     [SerializeField] private float stepCooldown = 0.2f;
 
+    [Tooltip("Segundos que tarda en recalcular su rotación hacia la siguiente casilla al terminar de moverse.")]
+    [SerializeField] private float finalRotationDuration = 0.1f;
+
     [Header("Posición en la casilla")]
     [Tooltip("Distancia (con signo) a la que se desplaza este coche respecto al centro de la casilla, perpendicular al vector casilla actual -> siguiente casilla. El signo decide el lado: p. ej. 1 para un coche y -1 para el otro los coloca a cada lado del circuito.")]
     [SerializeField] private float lateralOffset = 1f;
@@ -245,7 +248,19 @@ public class Car : MonoBehaviour
         Vector3 nextDirection = GetDirectionToNext(currentCheckpoint);
         if (nextDirection != Vector3.zero)
         {
-            carTransform.rotation = Quaternion.LookRotation(nextDirection, GetPlaneNormal(currentCheckpoint));
+            Quaternion startRot = carTransform.rotation;
+            Quaternion targetRot = Quaternion.LookRotation(nextDirection, GetPlaneNormal(currentCheckpoint));
+
+            float elapsed = 0f;
+            while (elapsed < finalRotationDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / finalRotationDuration);
+                carTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+                yield return null;
+            }
+
+            carTransform.rotation = targetRot;
         }
 
         moveCoroutine = null;

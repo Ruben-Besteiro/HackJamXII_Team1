@@ -9,6 +9,8 @@ using UnityEngine.UI;
 ///   de vueltas completadas por el Car 1 y el Car 2 respectivamente.
 /// - Llevar en "leader" el coche que más casillas ha recorrido, y poner en
 ///   negrita el lap counter de ese coche.
+/// - Ocultar el HUD de carrera (lap counters y "GeneralTimeBar") mientras
+///   dura la cuenta atrás inicial, igual que las cartas.
 ///
 /// Para saber si un coche ha completado una vuelta miramos su
 /// "checkpointsReached" (cuántas casillas ha recorrido en total, sin dar
@@ -23,6 +25,11 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private float countdownDuration = 3f;
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private GameObject countdownCanvas;
+
+    // Canvas con los lap counters y la "GeneralTimeBar": se oculta mientras
+    // dura la cuenta atrás inicial, igual que las cartas, para que no se vea
+    // hasta que la partida empiece de verdad.
+    [SerializeField] private Canvas hudCanvas;
 
     private float countdownTimeRemaining;
 
@@ -94,6 +101,12 @@ public class RaceManager : MonoBehaviour
         countdownTimeRemaining = countdownDuration;
         RaceStarted = false;
         UpdateCountdownText();
+
+        // El HUD de carrera no debe verse hasta que termine la cuenta atrás.
+        if (hudCanvas != null)
+        {
+            hudCanvas.enabled = false;
+        }
     }
 
     void Update()
@@ -130,6 +143,11 @@ public class RaceManager : MonoBehaviour
             if (countdownCanvas != null)
             {
                 countdownCanvas.SetActive(false);
+            }
+
+            if (hudCanvas != null)
+            {
+                hudCanvas.enabled = true;
             }
         }
     }

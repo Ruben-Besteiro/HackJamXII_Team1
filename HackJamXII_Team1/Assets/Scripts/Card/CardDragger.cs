@@ -32,6 +32,13 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             _initialYPositionChoice = RightChoice != null ? RightChoice.anchoredPosition.y :  LeftChoice.anchoredPosition.y;
     }
 
+    // Mientras dure la cuenta atrás inicial del RaceManager, la carta no
+    // debe reaccionar a ningún input (ratón ni mando).
+    private bool IsInputAllowed()
+    {
+        return RaceManager.Instance == null || RaceManager.Instance.RaceStarted;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         // _rectTransform.anchoredPosition = _initialPosition;
@@ -39,6 +46,9 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!IsInputAllowed())
+            return;
+
         Vector2 targetPosition = _rectTransform.anchoredPosition + (eventData.delta / _canvas.scaleFactor);
         float clampedX = Mathf.Clamp(targetPosition.x, _initialPosition.x - _limitOffsetPosition,
             _initialPosition.x + _limitOffsetPosition);
@@ -51,6 +61,9 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void DragWithJoysticks(float joystick)
     {
+        if (!IsInputAllowed())
+            return;
+
         ApplyDragPosition(joystick);
     }
 
@@ -84,6 +97,9 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void EndDrag()
     {
+        if (!IsInputAllowed())
+            return;
+
         if (dragFactor > SelectionOffset)
             if (cardManagement != null)
                 cardManagement.SetChoice(true);
