@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30f16870ae6cb174288eaf0325ae794d, type: 3}
-  m_Name: Tipo 5
+  m_Name: Card_ProChasis1_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
-  cardDescripton: Hay 7
+  cardDescripton: Se te presenta una oportunidad para aumentar el taller.
   cardImage: {fileID: 0}
-  cardTitle: 5
-  cardRightChoiceText: 
-  cardLeftChoiceText: 
+  cardTitle: "Aerodin\xE1mica"
+  cardRightChoiceText: Invertimos en I+D
+  cardLeftChoiceText: No se derrocha
   cardCategory: 0
-  cardGasValueLeft: 0
-  cardTireValueLeft: 2
-  cardChasisValueLeft: -2
-  cardGasValueRight: -2
-  cardTireValueRight: 0
-  cardChasisValueRight: 2
+  cardGasValueLeft: -1
+  cardTireValueLeft: 0
+  cardChasisValueLeft: 1
+  cardGasValueRight: 1
+  cardTireValueRight: -1
+  cardChasisValueRight: 0

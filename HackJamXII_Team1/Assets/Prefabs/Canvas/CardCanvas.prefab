@@ -1498,8 +1498,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Right Choice
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1895,10 +1896,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bandera de cuadros
+  m_text: Inicio
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1922,13 +1924,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.3
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 7
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2264,8 +2266,9 @@ MonoBehaviour:
     eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
     in culpa qui officia deserunt mollit anim id est laborum.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2289,7 +2292,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.65
+  m_fontSize: 20.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2842,8 +2845,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Left Choice
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3310,10 +3314,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bandera de cuadros
+  m_text: Inicio
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3337,13 +3342,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.3
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 7
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3574,7 +3579,7 @@ MonoBehaviour:
   GasValue: 3
   TireValue: 3
   ChasisValue: 3
-  CardsReference: {fileID: 11400000, guid: 533fe385505be054da35b0eb980c2216, type: 2}
+  CardsReference: {fileID: 11400000, guid: 95a06df0722bd85469e53ae6cb79c51b, type: 2}
   textDescription: {fileID: 1782757257169097219}
   textImage: {fileID: 8429537234577678465}
   textTitle: {fileID: 3707504277686443849}
@@ -3673,7 +3678,7 @@ MonoBehaviour:
   GasValue: 3
   TireValue: 3
   ChasisValue: 3
-  CardsReference: {fileID: 11400000, guid: 533fe385505be054da35b0eb980c2216, type: 2}
+  CardsReference: {fileID: 11400000, guid: 95a06df0722bd85469e53ae6cb79c51b, type: 2}
   textDescription: {fileID: 718570522562997034}
   textImage: {fileID: 8247506013140476205}
   textTitle: {fileID: 841046408542832726}
@@ -4592,8 +4597,9 @@ MonoBehaviour:
     eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
     in culpa qui officia deserunt mollit anim id est laborum.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4617,7 +4623,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.65
+  m_fontSize: 20.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6035,8 +6041,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Right Choice
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7084,8 +7091,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Left Choice
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
+  m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
