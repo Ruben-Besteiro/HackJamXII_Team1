@@ -2659,7 +2659,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Car
   cardManager: {fileID: 579811263}
   checkpointsReached: 0
-  timeBetweenCheckpoints: 400
   tires: 1
   fuel: 1
   chasis: 1
@@ -3121,7 +3120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Car
   cardManager: {fileID: 1683952479}
   checkpointsReached: 0
-  timeBetweenCheckpoints: 500
   tires: 1
   fuel: 1
   chasis: 1
@@ -4552,7 +4550,7 @@ PrefabInstance:
     - target: {fileID: 2645607001899207733, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}
       propertyPath: generalTimer
-      value: 3
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2645607001899207733, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}
@@ -4574,6 +4572,20 @@ PrefabInstance:
       propertyPath: countdownCanvas
       value: 
       objectReference: {fileID: 265045785}
+    - target: {fileID: 4623662820740462429, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: m_text
+      value: '0
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653667955884524477, guid: 6647d66b0b92d374e86bc5072f123631,
+        type: 3}
+      propertyPath: m_text
+      value: '0
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 6709001694710268979, guid: 6647d66b0b92d374e86bc5072f123631,
         type: 3}
       propertyPath: m_LocalPosition.x
