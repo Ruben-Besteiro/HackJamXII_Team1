@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "IM_GameControls",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "898fb475-247f-47b2-87e2-6f4711479be6",
+            "actions": [
+                {
+                    "name": "Steer",
+                    "type": "Value",
+                    "id": "73e75426-83a1-42ec-9da3-a70899200b19",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9e731870-3232-4820-a6e1-5c4f5a709979",
+                    "path": "<Joystick>/stick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26456733-76d9-41e9-8112-4b584946f245",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

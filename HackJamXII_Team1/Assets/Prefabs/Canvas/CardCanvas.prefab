@@ -1329,7 +1329,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 723d4f56d1ae2aa44bbe4bc159ab1757, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2428,8 +2428,11 @@ MonoBehaviour:
   textTiresValue: {fileID: 5905746353639256919}
   textChasisValue: {fileID: 6195832312469937720}
   imageTimeFill: {fileID: 8714764675657802298}
-  cardCanvas: {fileID: 3331945963423946899}
-  maxTime: 15
+  fallbackMaxTime: 10
+  minTimeBarDuration: 2
+  referenceGeneralTimer: 180
+  referenceMaxTime: 15
+  floorTriggerGeneralTimer: 8
 --- !u!1 &3999064167234102358
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,7 +2470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.3264792, y: 1}
-  m_AnchoredPosition: {x: -0.32214355, y: 0}
+  m_AnchoredPosition: {x: -0.32226562, y: 0}
   m_SizeDelta: {x: -3.6778564, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7298651442596353530
@@ -2521,8 +2524,11 @@ MonoBehaviour:
   textTiresValue: {fileID: 7885293997377448992}
   textChasisValue: {fileID: 6160003474405366993}
   imageTimeFill: {fileID: 1069246438510034417}
-  cardCanvas: {fileID: 3331945963423946899}
-  maxTime: 15
+  fallbackMaxTime: 10
+  minTimeBarDuration: 2
+  referenceGeneralTimer: 180
+  referenceMaxTime: 15
+  floorTriggerGeneralTimer: 8
 --- !u!1 &4285825773085639018
 GameObject:
   m_ObjectHideFlags: 0
@@ -3159,7 +3165,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 723d4f56d1ae2aa44bbe4bc159ab1757, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3181,6 +3187,7 @@ GameObject:
   - component: {fileID: 3331945963423946899}
   - component: {fileID: 5248963354098976706}
   - component: {fileID: 431641985228286709}
+  - component: {fileID: 3109848585933896498}
   m_Layer: 5
   m_Name: CardCanvas
   m_TagString: Untagged
@@ -3273,6 +3280,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3109848585933896498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6320395332994476844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7812e2704ecb545a6181482665f83b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamepadCardController
+  player1Dragger: {fileID: 6389097397192104842}
+  player2Dragger: {fileID: 7632293884205581581}
 --- !u!1 &6451949628291694007
 GameObject:
   m_ObjectHideFlags: 0

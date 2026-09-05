@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum CardCategory { Basic, Rare, Gift}
+
 [CreateAssetMenu(fileName = "SO_CardData", menuName = "Scriptable Objects/SO_CardData")]
 public class SO_CardData : ScriptableObject
 {
@@ -8,6 +10,7 @@ public class SO_CardData : ScriptableObject
     public string cardTitle;
     public string cardRightChoiceText;
     public string cardLeftChoiceText;
+    public CardCategory cardCategory;
     [Header("Card Values Right")]
     public int cardGasValueRight;
     public int cardTireValueRight;
