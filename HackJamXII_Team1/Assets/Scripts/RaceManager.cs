@@ -16,6 +16,8 @@ using UnityEngine.UI;
 /// </summary>
 public class RaceManager : MonoBehaviour
 {
+    public static RaceManager Instance { get; private set; }
+
     [Header("Coches")]
     [SerializeField] private Car car1;
     [SerializeField] private Car car2;
@@ -48,6 +50,25 @@ public class RaceManager : MonoBehaviour
     // Cuenta atrás hasta la próxima carta de prueba (entre 1 y 3 segundos).
     private float timeUntilNextCardTest;
 
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     void Start()
     {
         timeUntilNextCardTest = Random.Range(1f, 3f);
@@ -60,7 +81,7 @@ public class RaceManager : MonoBehaviour
 
         UpdateLeader();
 
-        UpdateCardTestHelper();
+        //UpdateCardTestHelper();
     }
 
     /// <summary>
@@ -118,7 +139,7 @@ public class RaceManager : MonoBehaviour
     }
 
 
-    /// <summary>
+    /*/// <summary>
     /// Helper de prueba para el sistema de cartas: cada cierto tiempo aleatorio
     /// (entre 1 y 3 segundos) "reparte" una carta a Car 1 o Car 2 -a modo de
     /// prueba, sin lógica real de reparto todavía-, mostrando "Prueba" en su
@@ -170,5 +191,5 @@ public class RaceManager : MonoBehaviour
         if (realTimeBar == null || maxTimeForCards <= 0f) return;
 
         realTimeBar.fillAmount = Mathf.Clamp01(timeRemainingForCard / maxTimeForCards);
-    }
+    }*/
 }
