@@ -13,9 +13,23 @@ public class ResultsManager : MonoBehaviour
     [SerializeField] private Transform car1;
     [SerializeField] private Transform car2;
 
+    [Header("Botón volver")]
+    [SerializeField] private GameObject backButton;
+    [SerializeField] private float backButtonDelay = 5f;
+
     private void Start()
     {
         StartCoroutine(ShowResults());
+        StartCoroutine(ShowBackButton());
+    }
+
+    private IEnumerator ShowBackButton()
+    {
+        if (backButton == null) yield break;
+
+        backButton.SetActive(false);
+        yield return new WaitForSeconds(backButtonDelay);
+        backButton.SetActive(true);
     }
 
     private IEnumerator ShowResults()
