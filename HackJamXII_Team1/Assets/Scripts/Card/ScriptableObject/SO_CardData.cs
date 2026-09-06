@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum CardCategory { Basic, Rare, Gift}
+public enum CardCategory { Gas, Tire, Chasis}
 
 [CreateAssetMenu(fileName = "SO_CardData", menuName = "Scriptable Objects/SO_CardData")]
 public class SO_CardData : ScriptableObject

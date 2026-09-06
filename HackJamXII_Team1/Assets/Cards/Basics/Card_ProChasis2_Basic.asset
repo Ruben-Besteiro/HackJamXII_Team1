@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Card_ProChasis2_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "Tu rival entra en boxes antes que t\xFA."
-  cardImage: {fileID: 1330336479, guid: e74f704397448744d8a194ce5736421f, type: 3}
+  cardImage: {fileID: 21300000, guid: 4b5954a7e2be8ac4b95349fcaa74adb4, type: 3}
   cardTitle: Undercut
   cardRightChoiceText: 'Plan B: Entramos'
   cardLeftChoiceText: 'Plan A: No entramos'
-  cardCategory: 0
+  cardCategory: 2
   cardGasValueLeft: -1
   cardTireValueLeft: 0
   cardChasisValueLeft: 1

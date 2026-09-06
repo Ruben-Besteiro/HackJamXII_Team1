@@ -22,6 +22,7 @@ public class CardManagement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textTitle;
     [SerializeField] private TextMeshProUGUI textRightChoice;
     [SerializeField] private TextMeshProUGUI textLeftChoice;
+    [SerializeField] private Image imageCardElement;
     
     [Header("Values Config")]
     [SerializeField] private RectTransform parentGasValues;
@@ -30,11 +31,16 @@ public class CardManagement : MonoBehaviour
     private List<Image> tiresValuesArray;
     [SerializeField] private RectTransform parentChasisValues;
     private List<Image> chasisValuesArray;
-    [SerializeField] private Color activateValuesColor; 
-    [SerializeField] private Color deactivateValuesColor; 
+    [SerializeField] private Color activateValuesColor;
+    [SerializeField] private Color deactivateValuesColor;
+    
+    [Header("Tier Cards Colors")]
+    [SerializeField] private Color colorGas;
+    [SerializeField] private Color colorTire;
+    [SerializeField] private Color colorChasis;
 
-    [Header("Time Card References")]
-    [SerializeField] private Image imageTimeFill;
+    [Header("Time Card References")] [SerializeField]
+    private Image imageTimeFill;
 
     // Canvas raíz de esta carta: se desactiva mientras dure la cuenta atrás
     // inicial para que la carta no se vea (ni sea interactuable) hasta que
@@ -59,10 +65,12 @@ public class CardManagement : MonoBehaviour
     // arriba, la duración de la TimeBar baja en línea recta.
     [SerializeField] private float floorTriggerGeneralTimer = 8f;
 
+    [SerializeField] private Color initialTimeColor;
+    [SerializeField] private Color finalTimeColor;
+
     private float maxTime;
     private float currentTime = 0f;
 
-    
 
     private void Start()
     {
@@ -99,6 +107,23 @@ public class CardManagement : MonoBehaviour
         textTitle.text = CardsReference.cards[indexCards].cardTitle;
         textRightChoice.text = CardsReference.cards[indexCards].cardRightChoiceText;
         textLeftChoice.text = CardsReference.cards[indexCards].cardLeftChoiceText;
+
+        imageCardElement.color = SetCardColorCategory(CardsReference.cards[indexCards].cardCategory);
+    }
+
+    private Color SetCardColorCategory(CardCategory category)
+    {
+        switch (category)
+        {
+            case CardCategory.Gas: 
+                return colorGas;
+            case CardCategory.Tire: 
+                return colorTire;
+            case CardCategory.Chasis: 
+                return colorChasis;
+            default:
+                return Color.white;
+        }
     }
 
     public void SetChoice(bool _isRight)
@@ -134,13 +159,13 @@ public class CardManagement : MonoBehaviour
         gasValuesArray = new List<Image>();
         tiresValuesArray = new List<Image>();
         chasisValuesArray = new List<Image>();
-        
+
         foreach (Transform value in parentGasValues.transform)
             gasValuesArray.Add(value.GetComponent<Image>());
-        
+
         foreach (Transform value in parentTiresValues.transform)
             tiresValuesArray.Add(value.GetComponent<Image>());
-        
+
         foreach (Transform value in parentChasisValues.transform)
             chasisValuesArray.Add(value.GetComponent<Image>());
     }
@@ -179,7 +204,7 @@ public class CardManagement : MonoBehaviour
             CardsShuffle();
             indexCards = 0;
         }
-        
+
         SetUpCard();
         bool endTimeSelection = currentTime <= 0;
         ResetTimer();
@@ -195,7 +220,7 @@ public class CardManagement : MonoBehaviour
         for (int i = CardsReference.cards.Length - 1; i > 0; i--)
         {
             int randomIndex = UnityEngine.Random.Range(0, i + 1);
-            
+
             var temp = CardsReference.cards[i];
             CardsReference.cards[i] = CardsReference.cards[randomIndex];
             CardsReference.cards[randomIndex] = temp;
@@ -207,6 +232,7 @@ public class CardManagement : MonoBehaviour
         maxTime = CalculateMaxTime();
         currentTime = maxTime;
         imageTimeFill.fillAmount = 1f;
+        imageTimeFill.color = initialTimeColor;
     }
 
     /// <summary>
@@ -241,9 +267,9 @@ public class CardManagement : MonoBehaviour
         currentTime -= Time.deltaTime;
         currentTime = Mathf.Clamp(currentTime, 0f, maxTime);
         imageTimeFill.fillAmount = currentTime / maxTime;
+        imageTimeFill.color = Color.Lerp(finalTimeColor, initialTimeColor, currentTime / maxTime);
 
         if (currentTime <= 0f)
             NextCard();
-            
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_ProGas3_Basic
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "\xA1DRS abierto! Aprovecha para acercarte"
-  cardImage: {fileID: -143572106, guid: 265d67aae9f443c4790e3b6ba6d9024f, type: 3}
+  cardImage: {fileID: 21300000, guid: 9440b67832359d040a3e34640fc80e95, type: 3}
   cardTitle: Rebufo
   cardRightChoiceText: No aprovechas
   cardLeftChoiceText: Aprovechas

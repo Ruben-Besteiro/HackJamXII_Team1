@@ -8,7 +8,9 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Canvas _canvas;
     
     private Vector2 _initialPosition;
+    private Quaternion _initialRotation;
     [SerializeField] private float _limitOffsetPosition = 50f;
+    [SerializeField] private float _limitOffsetRotation = 8f;
 
     [Header("References")] 
     [SerializeField] private CardManagement cardManagement;
@@ -27,6 +29,7 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _canvas = GetComponentInParent<Canvas>();
 
         _initialPosition = _rectTransform.anchoredPosition;
+        _initialRotation = _rectTransform.rotation;
         
         if (RightChoice != null || LeftChoice != null)
             _initialYPositionChoice = RightChoice != null ? RightChoice.anchoredPosition.y :  LeftChoice.anchoredPosition.y;
@@ -69,10 +72,13 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private void ApplyDragPosition(float _normalizedFactor)
     {
-        dragFactor = Mathf.Clamp(_normalizedFactor, -1f, 1);
+        dragFactor = Mathf.Clamp(_normalizedFactor, -1f, 1f);
         
         float targetX = _initialPosition.x + (dragFactor * _limitOffsetPosition);
         _rectTransform.anchoredPosition = new Vector2(targetX, _initialPosition.y);
+        
+        float targetRotX = _initialRotation.x + (dragFactor * _limitOffsetRotation);
+        _rectTransform.localRotation = Quaternion.Euler(0f, 0f, targetRotX);
         
         float rightIntensity = Mathf.Max(0f, dragFactor);
         float leftIntensity = Mathf.Max(0f, -dragFactor);
@@ -109,6 +115,7 @@ public class CardDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 cardManagement.SetChoice(false);
         
         _rectTransform.anchoredPosition = _initialPosition;
+        _rectTransform.rotation = _initialRotation;
         
         if (RightChoice != null) 
             RightChoice.anchoredPosition = new Vector2( _rectTransform.anchoredPosition.x, _initialYPositionChoice);

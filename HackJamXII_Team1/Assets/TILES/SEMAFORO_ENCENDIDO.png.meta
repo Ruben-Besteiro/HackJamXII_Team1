@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -63,16 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 2
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    maxTextureSize: 512
+    resizeAlgorithm: 1
+    textureFormat: 4
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -85,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,18 +102,18 @@ TextureImporter:
         serializedVersion: 2
         x: 2
         y: 23
-        width: 66
+        width: 67
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e89dcd9aa589e2478f6f7a2c4307f60
-      internalID: -175631068
+      spriteID: e5c68a31dd1cb5745a79174809176988
+      internalID: 1295570594
       vertices: []
       indices: 
       edges: []
@@ -122,20 +122,20 @@ TextureImporter:
       name: SEMAFORO_ENCENDIDO_1
       rect:
         serializedVersion: 2
-        x: 58
+        x: 2
         y: 2
-        width: 10
+        width: 11
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a673b8553771d114d8d576721bb6eb38
-      internalID: 586386977
+      spriteID: 4df2e872ef16ad0429952a348cd14053
+      internalID: -765070552
       vertices: []
       indices: 
       edges: []
@@ -144,20 +144,20 @@ TextureImporter:
       name: SEMAFORO_ENCENDIDO_2
       rect:
         serializedVersion: 2
-        x: 44
+        x: 15
         y: 2
-        width: 10
+        width: 12
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52bb886d76aedd742938a5822f9e2b8a
-      internalID: -1096864546
+      spriteID: 057d0b197051d9044bafa52cdfea0812
+      internalID: 1700001262
       vertices: []
       indices: 
       edges: []
@@ -166,20 +166,20 @@ TextureImporter:
       name: SEMAFORO_ENCENDIDO_3
       rect:
         serializedVersion: 2
-        x: 30
+        x: 29
         y: 2
-        width: 10
+        width: 12
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 071d3830b2825704abb6667e531c8ed2
-      internalID: 1438724372
+      spriteID: 39a15413da0038c4a9190de2ce2f2973
+      internalID: -1216206972
       vertices: []
       indices: 
       edges: []
@@ -188,20 +188,20 @@ TextureImporter:
       name: SEMAFORO_ENCENDIDO_4
       rect:
         serializedVersion: 2
-        x: 16
+        x: 44
         y: 2
-        width: 10
+        width: 11
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a80305714386204392be4c8115a276e
-      internalID: 1237470504
+      spriteID: 4d1b25669a870b04297705bab0457c92
+      internalID: -1579616940
       vertices: []
       indices: 
       edges: []
@@ -210,20 +210,20 @@ TextureImporter:
       name: SEMAFORO_ENCENDIDO_5
       rect:
         serializedVersion: 2
-        x: 2
+        x: 58
         y: 2
-        width: 10
+        width: 11
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 50ee6d4a7f0d2884d87250347263dab1
-      internalID: -2075584464
+      spriteID: 7242d449de5864b4a8e3a7900f8befbc
+      internalID: -2075000076
       vertices: []
       indices: 
       edges: []
@@ -232,7 +232,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: a7d5687f45512a64ba7a306d69cc3901
     internalID: 0
     vertices: []
     indices: 
@@ -242,12 +242,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SEMAFORO_ENCENDIDO_0: -175631068
-      SEMAFORO_ENCENDIDO_1: 586386977
-      SEMAFORO_ENCENDIDO_2: -1096864546
-      SEMAFORO_ENCENDIDO_3: 1438724372
-      SEMAFORO_ENCENDIDO_4: 1237470504
-      SEMAFORO_ENCENDIDO_5: -2075584464
+      SEMAFORO_ENCENDIDO_0: 1295570594
+      SEMAFORO_ENCENDIDO_1: -765070552
+      SEMAFORO_ENCENDIDO_2: 1700001262
+      SEMAFORO_ENCENDIDO_3: -1216206972
+      SEMAFORO_ENCENDIDO_4: -1579616940
+      SEMAFORO_ENCENDIDO_5: -2075000076
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

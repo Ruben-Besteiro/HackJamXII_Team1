@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Card_ProGas_Gift
   m_EditorClassIdentifier: Assembly-CSharp::SO_CardData
   cardDescripton: "\xDAltimas vueltas. Cada peque\xF1a decisi\xF3n importa."
-  cardImage: {fileID: -143572106, guid: 265d67aae9f443c4790e3b6ba6d9024f, type: 3}
+  cardImage: {fileID: 21300000, guid: 9161bd5e82c6e1a46a61a940ed078242, type: 3}
   cardTitle: Bandera a cuadros
   cardRightChoiceText: "Ce\xF1irse a la estrat\xE9gia"
   cardLeftChoiceText: Acelero
-  cardCategory: 2
+  cardCategory: 0
   cardGasValueLeft: 2
   cardTireValueLeft: 0
   cardChasisValueLeft: 0
