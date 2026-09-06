@@ -13,6 +13,8 @@ public class GameSceneManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float fadeDuration = 0.5f;
 
+    private bool isLoading = false;
+
     private string mainScene;
     private string secondaryScene;
 
@@ -43,11 +45,13 @@ public class GameSceneManager : MonoBehaviour
             return;
         }
 
-        StartCoroutine(LoadSceneFade(sceneName));
+        if (!isLoading)
+            StartCoroutine(LoadSceneFade(sceneName));
     }
 
     public IEnumerator LoadSceneFade(string sceneName)
     {
+        isLoading = true;
         yield return FadeIn();
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
@@ -61,6 +65,8 @@ public class GameSceneManager : MonoBehaviour
 
         mainScene = sceneName;
         yield return FadeOut();
+        
+        isLoading = false;
     }
 
     /* SECONDARY SCENE */
