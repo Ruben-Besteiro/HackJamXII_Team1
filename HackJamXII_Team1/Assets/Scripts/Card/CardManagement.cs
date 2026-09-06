@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -71,6 +72,18 @@ public class CardManagement : MonoBehaviour
     private float maxTime;
     private float currentTime = 0f;
 
+    [Header("Selection Timing")]
+    // Tiempo mínimo que debe estar visible una carta antes de que su
+    // elección se haga efectiva.
+    [SerializeField] private float minChoiceDelay;
+
+    // Momento (Time.time) en el que apareció la carta actual.
+    private float cardAppearTime;
+
+    // Si el jugador elige antes de "minChoiceDelay", la decisión queda a
+    // la espera de que se cumpla ese tiempo antes de aplicarse.
+    private bool choicePending;
+
 
     private void Start()
     {
@@ -102,6 +115,8 @@ public class CardManagement : MonoBehaviour
         if (CardsReference.cards.Length <= 0)
             return;
 
+        cardAppearTime = Time.time;
+
         textDescription.text = CardsReference.cards[indexCards].cardDescripton;
         textImage.sprite = CardsReference.cards[indexCards].cardImage;
         textTitle.text = CardsReference.cards[indexCards].cardTitle;
@@ -127,6 +142,52 @@ public class CardManagement : MonoBehaviour
     }
 
     public void SetChoice(bool _isRight)
+    {
+        // Ya hay una elección esperando a que se cumpla el tiempo mínimo:
+        // ignoramos elecciones adicionales sobre la misma carta.
+        if (choicePending)
+        {
+            Debug.Log($"[CardChoice] Ignorada: ya hay una elección pendiente en la carta {indexCards}.");
+            return;
+        }
+
+        float elapsed = Time.time - cardAppearTime;
+        float remaining = minChoiceDelay - elapsed;
+        Debug.Log($"[CardChoice] SetChoice({_isRight}) en carta {indexCards}. minChoiceDelay={minChoiceDelay}, elapsed={elapsed:0.000}, remaining={remaining:0.000}");
+
+        if (remaining <= 0f)
+        {
+            Debug.Log("[CardChoice] -> Aplicando de inmediato.");
+            ApplyChoice(_isRight);
+            return;
+        }
+
+        choicePending = true;
+        Debug.Log($"[CardChoice] -> Encolada, se aplicará en {remaining:0.000}s.");
+        StartCoroutine(ApplyChoiceDelayed(_isRight, remaining, indexCards));
+    }
+
+    // Espera lo que quede hasta "minChoiceDelay" desde que apareció la
+    // carta y entonces aplica la elección. Si mientras tanto la carta ya
+    // ha cambiado (p. ej. se agotó el tiempo de la carta), la elección
+    // queda descartada por no corresponder ya a la carta visible.
+    private IEnumerator ApplyChoiceDelayed(bool _isRight, float delay, int cardIndexAtChoice)
+    {
+        yield return new WaitForSeconds(delay);
+
+        choicePending = false;
+
+        if (cardIndexAtChoice != indexCards)
+        {
+            Debug.Log($"[CardChoice] Descartada: la carta ya cambió mientras esperábamos (era {cardIndexAtChoice}, ahora {indexCards}).");
+            yield break;
+        }
+
+        Debug.Log($"[CardChoice] -> Aplicando tras la espera (carta {indexCards}).");
+        ApplyChoice(_isRight);
+    }
+
+    private void ApplyChoice(bool _isRight)
     {
         if (_isRight)
         {
