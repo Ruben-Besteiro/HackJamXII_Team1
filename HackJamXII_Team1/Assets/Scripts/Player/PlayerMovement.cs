@@ -1,12 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Movimiento del jugador para una vista top-down en 3D.
-/// El desplazamiento está alineado con los ejes del mundo (X/Z): WASD mueve
-/// siempre en esas direcciones fijas, sin depender de la rotación de la cámara
-/// ni del propio jugador.
-/// </summary>
+// El movimiento de los coches
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,7 @@ public class SoundManager : MonoBehaviour
     private AudioSource sfxSource;
     private Dictionary<Music, AudioClip> musicDict;
     private Dictionary<SFX, AudioClip> sfxDict;
+    private Coroutine musicFadeCoroutine;
 
     private void Awake()
     {
@@ -88,6 +90,34 @@ public class SoundManager : MonoBehaviour
     public void StopMusic() => musicSource.Stop();
     public void PauseMusic() => musicSource.Pause();
     public void ResumeMusic() => musicSource.UnPause();
+
+    // Fundidos de música pensados para sincronizarse con el fundido a negro
+    // del GameSceneManager durante los cambios de escena.
+    public void FadeMusicOut(float duration) => FadeMusicTo(0f, duration);
+    public void FadeMusicIn(float duration) => FadeMusicTo(musicVolume, duration);
+
+    private void FadeMusicTo(float targetVolume, float duration)
+    {
+        if (musicFadeCoroutine != null)
+            StopCoroutine(musicFadeCoroutine);
+
+        musicFadeCoroutine = StartCoroutine(FadeMusicRoutine(targetVolume, duration));
+    }
+
+    private IEnumerator FadeMusicRoutine(float targetVolume, float duration)
+    {
+        float startVolume = musicSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(startVolume, targetVolume, Mathf.Clamp01(elapsed / duration));
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
+    }
 
     public void PlaySFX(SFX sfx)
     {
