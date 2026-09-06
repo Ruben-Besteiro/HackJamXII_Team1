@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 744814272}
   - component: {fileID: 744814271}
   - component: {fileID: 744814270}
+  - component: {fileID: 744814274}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -470,6 +471,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744814268}
   m_CullTransparentMesh: 1
+--- !u!114 &744814274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744814268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8d593b20e0aa4ba0b34f0738e3d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuStartButton
+  buttonReference: {fileID: 744814271}
 --- !u!1001 &819871609
 PrefabInstance:
   m_ObjectHideFlags: 0

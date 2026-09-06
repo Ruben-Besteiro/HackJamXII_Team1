@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JUGAR
+  m_text: SALTAR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6b04609ebdc09f41bedb7e334d3d823, type: 2}
   m_sharedMaterial: {fileID: 374409746641335609, guid: c6b04609ebdc09f41bedb7e334d3d823,
@@ -805,6 +805,7 @@ GameObject:
   - component: {fileID: 1899228959}
   - component: {fileID: 1899228958}
   - component: {fileID: 1899228957}
+  - component: {fileID: 1899228961}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -922,7 +923,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 4068fac5a434483459125bef6ed757db, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -940,6 +941,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899228955}
   m_CullTransparentMesh: 1
+--- !u!114 &1899228961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899228955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d8d593b20e0aa4ba0b34f0738e3d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuStartButton
+  buttonReference: {fileID: 1899228958}
 --- !u!1 &1945564142
 GameObject:
   m_ObjectHideFlags: 0

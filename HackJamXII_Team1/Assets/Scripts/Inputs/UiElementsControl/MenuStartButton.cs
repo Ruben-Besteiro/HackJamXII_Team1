@@ -24,7 +24,6 @@ public class MenuStartButton : MonoBehaviour
         {
             buttonReference.onClick.Invoke();
             buttonReference.onClick.RemoveAllListeners();
-            Debug.Log("Llamada A");
         }
     }
 }
