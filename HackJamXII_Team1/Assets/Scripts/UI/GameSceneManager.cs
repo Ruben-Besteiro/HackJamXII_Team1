@@ -120,6 +120,7 @@ public class GameSceneManager : MonoBehaviour
         if (fadePanel == null) yield break;
 
         fadePanel.gameObject.SetActive(true);
+        SoundManager.Instance?.FadeMusicOut(fadeDuration);
         yield return FadeTo(1f);
     }
 
@@ -127,6 +128,7 @@ public class GameSceneManager : MonoBehaviour
     {
         if (fadePanel == null) yield break;
 
+        SoundManager.Instance?.FadeMusicIn(fadeDuration);
         yield return FadeTo(0f);
         if (fadePanel != null) fadePanel.gameObject.SetActive(false);
     }

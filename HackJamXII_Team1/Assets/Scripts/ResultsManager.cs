@@ -1,14 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Controla la escena "Results". Espera medio segundo, consulta al
-/// "RaceManager" (que sobrevive de la escena "Sample" gracias a su
-/// "DontDestroyOnLoad") quién ha ganado la carrera y desplaza la cámara
-/// en el eje X, con un lerp, hasta dejarla alineada con el "Cylinder" del
-/// coche ganador -Car 1 corresponde a "Cylinder 1" y Car 2 a "Cylinder 2"-,
-/// de forma que su eje azul (Z, hacia delante) coincida con el del ganador.
-/// </summary>
+// Escena de resultados: Anuncia al ganador
 public class ResultsManager : MonoBehaviour
 {
     [SerializeField] private float delayBeforeReveal = 1;

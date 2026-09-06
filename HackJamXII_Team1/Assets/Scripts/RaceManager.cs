@@ -3,20 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/// <summary>
-/// Controla el estado general de la carrera. De momento, se encarga de:
-/// - Actualizar los textos "Lap Counter 1" y "Lap Counter 2" con el número
-///   de vueltas completadas por el Car 1 y el Car 2 respectivamente.
-/// - Llevar en "leader" el coche que más casillas ha recorrido, y poner en
-///   negrita el lap counter de ese coche.
-/// - Ocultar el HUD de carrera (lap counters y "GeneralTimeBar") mientras
-///   dura la cuenta atrás inicial, igual que las cartas.
-///
-/// Para saber si un coche ha completado una vuelta miramos su
-/// "checkpointsReached" (cuántas casillas ha recorrido en total, sin dar
-/// la vuelta): si es distinto de 0 y es múltiplo del número de checkpoints
-/// del circuito, es que acaba de dar una vuelta completa.
-/// </summary>
+// Controla el estado general de la carrera
 public class RaceManager : MonoBehaviour
 {
     public static RaceManager Instance { get; private set; }
@@ -26,31 +13,15 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private GameObject countdownCanvas;
 
-    // Las 5 luces rojas del semáforo (sprites "SEMAFORO_ENCENDIDO_1".."_5",
-    // uno por imagen), que se van encendiendo de una en una según baja
-    // "countdownTimeRemaining". El índice 0 es la primera en encenderse.
+    // El semáforo
     [SerializeField] private Image[] redLights;
-
-    // Segundos de cuenta atrás restantes en los que se enciende cada
-    // "redLights[i]" (mismo orden: índice 0 -> primer valor, etc.).
     private static readonly float[] RedLightThresholds = { 2.8f, 2.6f, 2.4f, 2.2f, 2.0f };
-
-    // Luz verde del semáforo (sprite "SEMAFORO_ENCENDIDO_0"), que se enciende
-    // un segundo después de la última roja, a la vez que arranca la carrera.
     [SerializeField] private Image greenLight;
-
-    // Canvas con los lap counters y la "GeneralTimeBar": se oculta mientras
-    // dura la cuenta atrás inicial, igual que las cartas, para que no se vea
-    // hasta que la partida empiece de verdad.
     [SerializeField] private Canvas hudCanvas;
 
     private float countdownTimeRemaining;
 
-    // Se pone a "true" en el segundo 1 de cuenta atrás (a la vez que se
-    // enciende la luz verde), no al llegar al 0: el semáforo se queda un
-    // segundo más en pantalla (encendido en verde) mientras la carrera ya
-    // ha arrancado de verdad (HUD, tiempo general, cartas...). Mientras sea
-    // "false" la carrera no avanza (ni el tiempo general ni las cartas).
+    // Se pone a true en el segundo 1 de la cuenta atrás y activa el input
     public bool RaceStarted { get; private set; }
 
     [Header("Coches")]
@@ -58,15 +29,6 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private Car car2;
     private Car leader;
 
-    /// <summary>
-    /// Número del coche ganador (1 o 2). Se fija una única vez, en el
-    /// momento exacto en que termina la carrera (ver "RefreshGeneralTimeBar"),
-    /// comparando "checkpointsReached" de cada coche. Debe calcularse ahí y
-    /// no más tarde: "car1"/"car2" viven en la escena "Sample" y se destruyen
-    /// en cuanto esta se descarga, así que para cuando "ResultsManager" (ya
-    /// en la escena "Results") pregunta por el ganador, esas referencias ya
-    /// no serían válidas.
-    /// </summary>
     public int WinnerCarNumber { get; private set; } = 1;
 
     [Header("Tiempo")]
@@ -116,7 +78,6 @@ public class RaceManager : MonoBehaviour
 
         countdownTimeRemaining = countdownDuration;
         RaceStarted = false;
-        UpdateCountdownText();
 
         // El HUD de carrera no debe verse hasta que termine la cuenta atrás.
         if (hudCanvas != null)
@@ -127,10 +88,6 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
-        // El semáforo sigue contando (y hay que seguir refrescándolo) hasta
-        // el segundo 0 exacto, aunque la carrera ya haya arrancado un
-        // segundo antes: por eso esto NO va dentro del "if (!RaceStarted)"
-        // de más abajo.
         if (countdownTimeRemaining > 0f)
         {
             UpdateCountdown();
@@ -146,17 +103,10 @@ public class RaceManager : MonoBehaviour
         UpdateLeader();
     }
 
-    /// <summary>
-    /// Cuenta atrás previa a la carrera: resta "Time.deltaTime" a
-    /// "countdownTimeRemaining", refresca "countdownText" y las luces del
-    /// semáforo ("UpdateLights"). En el segundo 1 marca "RaceStarted" y
-    /// muestra el HUD (la carrera arranca ya, con el semáforo en verde);
-    /// en el 0 oculta "countdownCanvas" entero.
-    /// </summary>
+    // Cuenta atrás
     private void UpdateCountdown()
     {
         countdownTimeRemaining = Mathf.Max(0f, countdownTimeRemaining - Time.deltaTime);
-        UpdateCountdownText();
         UpdateLights();
 
         if (!RaceStarted && countdownTimeRemaining <= 1f)
@@ -175,19 +125,7 @@ public class RaceManager : MonoBehaviour
         }
     }
 
-    private void UpdateCountdownText()
-    {
-        if (countdownText == null) return;
-
-        countdownText.text = Mathf.CeilToInt(countdownTimeRemaining).ToString();
-    }
-
-    /// <summary>
-    /// Enciende cada "redLights[i]" en cuanto "countdownTimeRemaining" baja
-    /// de su "RedLightThresholds[i]" (2.8, 2.6, 2.4, 2.2, 2.0), y
-    /// "greenLight" al llegar a 1. Se recalculan las 6 cada frame en vez de
-    /// una sola vez porque es más simple y no tiene coste real.
-    /// </summary>
+    // Animación de cuenta atrás
     private void UpdateLights()
     {
         if (redLights != null)
@@ -215,11 +153,6 @@ public class RaceManager : MonoBehaviour
         RefreshGeneralTimeBar();
     }
 
-    /// <summary>
-    /// Actualiza "generalTimeBar" para que su "fillAmount" refleje qué
-    /// fracción del tiempo total de partida queda en "generalTimer"
-    /// (1 = tiempo completo, 0 = se ha agotado).
-    /// </summary>
     private void RefreshGeneralTimeBar()
     {
         if (generalTimeBar == null || initialGeneralTimer <= 0) return;
@@ -228,18 +161,12 @@ public class RaceManager : MonoBehaviour
 
         if (generalTimeBar.fillAmount <= 0f)
         {
-            // Hay que fijar el ganador aquí, antes de cambiar de escena:
-            // "car1"/"car2" pertenecen a "Sample" y se destruyen en cuanto
-            // se descarga, así que ya no se podrían consultar desde "Results".
             WinnerCarNumber = (car1 != null && car2 != null && car2.checkpointsReached > car1.checkpointsReached) ? 2 : 1;
             GameSceneManager.Instance.LoadScene("Results", SceneTransition.FadeBlack);
         }
     }
 
-    /// <summary>
-    /// Comprueba si "car" acaba de completar una vuelta nueva y, si es así,
-    /// incrementa "laps" y refresca "lapCounterText" con el valor actual.
-    /// </summary>
+
     private void UpdateLapCounter(Car car, ref int lastCheckpointsReached, ref int laps, TextMeshProUGUI lapCounterText)
     {
         if (car == null || lapCounterText == null) return;
@@ -260,11 +187,6 @@ public class RaceManager : MonoBehaviour
         lapCounterText.text = laps.ToString();
     }
 
-    /// <summary>
-    /// Actualiza "leader" con el coche que más casillas ha recorrido
-    /// (mayor "checkpointsReached") y pone su lap counter en negrita,
-    /// dejando el del otro coche en estilo normal.
-    /// </summary>
     private void UpdateLeader()
     {
         if (car1 == null || car2 == null) return;
